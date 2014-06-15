@@ -1,0 +1,181 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.group15.thermal.app.MainActivity$PlaceholderFragment">
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:id="@+id/linearLayout" android:layout_gravity="center"
+    android:layout_centerVertical="true" android:layout_marginTop="25dip">
+    <TextView
+        android:id="@+id/section_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Monday Settings"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_marginBottom="25dip"/>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingLeft="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="0.5"
+                android:text="Day to Night"
+                android:textSize="20sp"
+                android:textAlignment="center" />
+
+            <TextView
+                android:paddingLeft="30dp"
+                android:layout_width="fill_parent"
+                android:layout_gravity="center_horizontal|right"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.5"
+                android:textSize="20sp"
+                android:text="Night to Day"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_weight="0.5"
+                android:text="Time"
+                android:textSize="25sp"
+                android:id="@+id/switchbtn1"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+
+
+            <Button
+                android:layout_weight="0.5"
+                android:textSize="25sp"
+                android:text="Time"
+                android:id="@+id/switchbtn6"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_weight="0.5"
+                android:text="Time"
+                android:textSize="25sp"
+                android:id="@+id/switchbtn2"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+
+            <Button
+                android:layout_weight="0.5"
+                android:textSize="25sp"
+                android:text="Time"
+                android:id="@+id/switchbtn7"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_weight="0.5"
+                android:text="Time"
+                android:textSize="25sp"
+                android:id="@+id/switchbtn3"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+
+            <Button
+                android:layout_weight="0.5"
+                android:textSize="25sp"
+                android:text="Time"
+                android:id="@+id/switchbtn8"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:layout_weight="0.5"
+                android:text="Time"
+                android:textSize="25sp"
+                android:id="@+id/switchbtn4"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+
+            <Button
+                android:layout_weight="0.5"
+                android:textSize="25sp"
+                android:text="Time"
+                android:id="@+id/switchbtn9"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        </TableRow>
+        <TableRow>
+
+            <Button
+                android:layout_weight="0.5"
+                android:text="Time"
+                android:textSize="25sp"
+                android:id="@+id/switchbtn5"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+
+            <Button
+                android:layout_weight="0.5"
+                android:textSize="25sp"
+                android:text="Time"
+                android:id="@+id/switchbtn10"
+                style="@android:style/Widget.Holo.ActionButton"
+
+                />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        >
+        <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:text="Save"
+            android:textAlignment="center"
+            android:textSize="23sp"
+            android:visibility="invisible"
+            android:id="@+id/savebtn"
+            />
+        </LinearLayout>
+</RelativeLayout>
