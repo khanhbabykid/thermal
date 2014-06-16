@@ -26,8 +26,8 @@ import com.group15.thermal.webservice.WeekProgram;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -65,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
         // a reference to the Tab.
@@ -72,10 +73,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
-	            //((OnRefreshListener)mSectionsPagerAdapter.getItem(mViewPager.)).onRefresh();
-	            ((OnRefreshListener)mSectionsPagerAdapter.getItem(position)).onRefresh();
-	            //currentFragment=mViewPager.getCurrentItem();
-	            //System.out.println(currentFragment);
+	            ((OnRefreshListener)mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem())).onRefresh();
+	            currentFragment=position;
 
             }
         });
@@ -164,7 +163,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
-	    currentFragment=mViewPager.getCurrentItem();
+
+//	    getSupportActionBar().setSelectedNavigationItem(tab.getPosition());
+//	    currentFragment=mViewPager.getCurrentItem();
     }
 
     @Override
@@ -182,9 +183,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		private List<Fragment> fragments;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+//	        this.fragments = new ArrayList<Fragment>();
+//			fragments.add(new MondayFragment());
+//			fragments.add(new TuesdayFragment());
+//	        fragments.add(new WednesdayFragment());
+//	        fragments.add(new ThursdayFragment());
+//	        fragments.add(new FridayFragment());
+//	        fragments.add(new SaturdayFragment());
+//	        fragments.add(new SundayFragment());
         }
 
         @Override
@@ -192,6 +202,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
+//	        return fragments.get(position);
         }
 
 		@Override
@@ -255,8 +266,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 	    Button usedbutton,savebtn;
 	    ArrayList<String> day2night= new ArrayList<String>(5);
 	    ArrayList<String> night2day= new ArrayList<String>(5);
-	    String title = null;
 		TextView titleview;
+
+
 
 	    @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -269,21 +281,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
 		    return rootView;
 	    }
-
 	    @Override
-	    public void onActivityCreated(Bundle savedInstanceState) {
+	    public void onViewCreated(View view, Bundle savedInstanceState) {
 		    updateOnPageChange();
-		    super.onActivityCreated(savedInstanceState);
+		    super.onViewCreated(view, savedInstanceState);
 	    }
 
 	    @Override
 	    public void onClick(View view) {
 			for(Integer button : buttons){
 				if(button.equals(view.getId())) {
-					usedbutton = (Button) getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+currentFragment)
-							.getView().findViewById(button);
-					savebtn = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+currentFragment)
-							.getView().findViewById(R.id.savebtn);
+					usedbutton = (Button) getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+getTitle(getArguments().getInt(ARG_SECTION_NUMBER)-1))
+							.getActivity().findViewById(button);
+					savebtn = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+getTitle(getArguments().getInt(ARG_SECTION_NUMBER)-1))
+							.getActivity().findViewById(R.id.savebtn);
 					System.out.println("Clicked!");
 					break;
 				}
@@ -317,9 +328,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 				}
 			}
 			for (int i=0; i<5;i++){
-				Button z = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+currentFragment)
+				Button z = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+(getArguments().getInt(ARG_SECTION_NUMBER)-1))
 					.getView().findViewById(buttons[i + 5]);
-				Button y = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+currentFragment)
+				Button y = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":"+(getArguments().getInt(ARG_SECTION_NUMBER)-1))
 						.getView().findViewById(buttons[i]);
 				z.setText(night2day.get(i));
 				y.setText(day2night.get(i));
@@ -349,7 +360,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 	    }
 	    @Override
 	    public void onRefresh() {
-			//updateOnPageChange();
+
+			while(!this.isAdded()){
+			}
+		    updateOnPageChange();
+		    Toast.makeText(getActivity(),"Updated",Toast.LENGTH_SHORT).show();
 	    }
     }
 
