@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.group15.thermal.app.MainActivity;
 import com.group15.thermal.app.OnRefreshListener;
@@ -36,10 +35,14 @@ public class MondayFragment extends Fragment implements View.OnClickListener,OnR
 		titleview.setText(title + " Settings");
 		return rootView;
 	}
-
+	View thisview=null;
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		thisview=view;
+		savebtn = (Button) thisview.findViewById(R.id.savebtn);
+		savebtn.setOnClickListener(this);
 		UpdateDisplay();
+
 		super.onViewCreated(view, savedInstanceState);
 	}
 
@@ -52,11 +55,10 @@ public class MondayFragment extends Fragment implements View.OnClickListener,OnR
 				day2night.add(swbtn.getTime());
 			}
 		}
+		savebtn.setVisibility(View.INVISIBLE);
 		for (int i=0; i<5;i++){
-			Button z = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":0")
-					.getView().findViewById(buttons[i + 5]);
-			Button y = (Button)getFragmentManager().findFragmentByTag("android:switcher:"+R.id.pager+":0")
-					.getView().findViewById(buttons[i]);
+			Button z = (Button)this.thisview.findViewById(buttons[i + 5]);
+			Button y = (Button)thisview.findViewById(buttons[i]);
 			z.setText(night2day.get(i));
 			y.setText(day2night.get(i));
 			z.setOnClickListener(this);
@@ -67,10 +69,9 @@ public class MondayFragment extends Fragment implements View.OnClickListener,OnR
 	@Override
 	public void onRefresh() {
 		if(MainActivity.currentFragment==1){
-			Toast.makeText(getActivity(), "Monday Created!", Toast.LENGTH_SHORT).show();
-
+			//Toast.makeText(getActivity(), "Monday Created!", Toast.LENGTH_SHORT).show();
 		}
-		while(this.isAdded()==false){
+		while(this.isAdded()==false) {
 			try {
 				wait(1000);
 			} catch (InterruptedException e) {
@@ -78,38 +79,56 @@ public class MondayFragment extends Fragment implements View.OnClickListener,OnR
 			}
 		}
 		UpdateDisplay();
-		Toast.makeText(getActivity(), "Updated!", Toast.LENGTH_SHORT).show();
+		System.out.println("Updated");
+
 	}
 
 	@Override
 	public void onClick(View view) {
-		savebtn = (Button) getActivity().findViewById(R.id.savebtn);
+
 		if(view.getId()==R.id.savebtn){
 
-			savebtn.setVisibility(View.GONE);
+			//final WeekProgram putwkpr = new WeekProgram();
+
+			savebtn.setVisibility(View.INVISIBLE);
 		}else {
-			for (Integer button : buttons) {
-				if (button.equals(view.getId())) {
-					usedbutton = (Button) getActivity().findViewById(button);
-					System.out.println("Clicked!");
+			Button preUsedButton=null;
+			for(int i = 0; i<10;i++){
+				if(view.getId()==buttons[i]){
+
+					usedbutton = (Button)thisview.findViewById(buttons[i]);
+					if(i==0){
+						preUsedButton = usedbutton;
+					}else{
+						preUsedButton = (Button)thisview.findViewById(buttons[i-1]);
+					}
 					break;
 				}
 			}
-			TimePickerDialog.OnTimeSetListener gettime;
+
+			//Get and check time!!!
+			final Button finalpreUsedButton = preUsedButton;
+			final TimePickerDialog.OnTimeSetListener gettime;
 			gettime = new TimePickerDialog.OnTimeSetListener() {
 				@Override
 				public void onTimeSet(TimePicker timePicker, int i, int i2) {
 
-					String time;
-					time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
-					time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
-					usedbutton.setText(time);
+					final String[] time = new String[1];
+
+					time[0] = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+					time[0] = time[0] + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+					usedbutton.setText(time[0]);
 					savebtn.setVisibility(View.VISIBLE);
+
 				}
 			};
+
 			TimePickerDialog picker = new TimePickerDialog(getActivity(), gettime,
 					new Integer(usedbutton.getText().toString().split(":")[0]),
 					new Integer(usedbutton.getText().toString().split(":")[1]), true);
+			picker.setCanceledOnTouchOutside(true);
+
+
 			picker.show();
 		}
 	}

@@ -1,6 +1,5 @@
 package com.group15.thermal.app;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,25 +8,26 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.group15.thermal.webservice.CorruptWeekProgramException;
 import com.group15.thermal.webservice.Heating;
-import com.group15.thermal.webservice.Switch;
 import com.group15.thermal.webservice.WeekProgram;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import Week.FridayFragment;
+import Week.MondayFragment;
+import Week.SaturdayFragment;
+import Week.SundayFragment;
+import Week.ThursdayFragment;
+import Week.TuesdayFragment;
+import Week.WednesdayFragment;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -65,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+	    mViewPager.setOffscreenPageLimit(6);
 
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -73,7 +74,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
-	            ((OnRefreshListener)mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem())).onRefresh();
 	            currentFragment=position;
 
             }
@@ -152,9 +152,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-	        recreate();
+	        try {
+		        GetThisWeekProgram();
+
+	        } catch (InterruptedException e) {
+		        e.printStackTrace();
+	        }
+	        ((OnRefreshListener)mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem())).onRefresh();
+
 	        return true;
         }
+	    if(id == R.id.refreshall){
+		    recreate();
+		    return true;
+	    }
         return super.onOptionsItemSelected(item);
     }
 
@@ -187,22 +198,22 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-//	        this.fragments = new ArrayList<Fragment>();
-//			fragments.add(new MondayFragment());
-//			fragments.add(new TuesdayFragment());
-//	        fragments.add(new WednesdayFragment());
-//	        fragments.add(new ThursdayFragment());
-//	        fragments.add(new FridayFragment());
-//	        fragments.add(new SaturdayFragment());
-//	        fragments.add(new SundayFragment());
+	        this.fragments = new ArrayList<Fragment>();
+			fragments.add(new MondayFragment());
+			fragments.add(new TuesdayFragment());
+	        fragments.add(new WednesdayFragment());
+	        fragments.add(new ThursdayFragment());
+	        fragments.add(new FridayFragment());
+	        fragments.add(new SaturdayFragment());
+	        fragments.add(new SundayFragment());
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-//	        return fragments.get(position);
+            //return PlaceholderFragment.newInstance(position + 1);
+	        return fragments.get(position);
         }
 
 		@Override
@@ -234,20 +245,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
-    /**
+  /*  *//**
      * A placeholder fragment containing a simple view.
-     */
+     *//*
     public static class PlaceholderFragment extends Fragment implements View.OnClickListener,OnRefreshListener {
-        /**
+        *//**
          * The fragment argument representing the section number for this
          * fragment.
-         */
+         *//*
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
+        *//**
          * Returns a new instance of this fragment for the given section
          * number.
-         */
+         *//*
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -278,12 +289,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 		    //Toast.makeText(getActivity(),getTitle(getArguments().getInt(ARG_SECTION_NUMBER))+" loaded",Toast.LENGTH_SHORT).show();
 		    titleview = (TextView)rootView.findViewById(R.id.section_label);
 		    titleview.setText(getTitle(getArguments().getInt(ARG_SECTION_NUMBER)-1) + " Settings");
-
 		    return rootView;
 	    }
 	    @Override
 	    public void onViewCreated(View view, Bundle savedInstanceState) {
-		    updateOnPageChange();
+		   // updateOnPageChange();
 		    super.onViewCreated(view, savedInstanceState);
 	    }
 
@@ -362,10 +372,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 	    public void onRefresh() {
 
 			while(!this.isAdded()){
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}).start();
 			}
 		    updateOnPageChange();
 		    Toast.makeText(getActivity(),"Updated",Toast.LENGTH_SHORT).show();
 	    }
     }
-
+*/
 }

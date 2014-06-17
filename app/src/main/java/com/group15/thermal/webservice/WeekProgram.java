@@ -27,7 +27,7 @@ public class WeekProgram {
 	 * Creates the default week program
 	 */
 	public void setDefault() {
-		//System.out.println("set default");
+		System.out.println("set default");
 		nr_switches_active = new int[7];
 		for (int i = 0; i < this.valid_days.length; i++) {
 			nr_switches_active[i] = 10;
@@ -43,6 +43,27 @@ public class WeekProgram {
 			this.data.get(day).add(new Switch("day", true, "00:00"));
 			this.data.get(day).add(new Switch("night", true, "00:00"));
 			this.data.get(day).add(new Switch("day", true, "00:00"));
+		}
+		/* Create the default switches settings*/
+		set_durations();
+	}
+	public void takecare() {
+		System.out.println("set care");
+		nr_switches_active = new int[7];
+		for (int i = 0; i < this.valid_days.length; i++) {
+			nr_switches_active[i] = 10;
+			String day = this.valid_days[i];
+			this.data.put(day, new ArrayList<Switch>());
+			this.data.get(day).add(new Switch("night", true, "23:59"));
+			this.data.get(day).add(new Switch("day", true, "23:59"));
+			this.data.get(day).add(new Switch("night", true, "23:59"));
+			this.data.get(day).add(new Switch("day", true, "23:59"));
+			this.data.get(day).add(new Switch("night", true, "23:59"));
+			this.data.get(day).add(new Switch("day", true, "23:59"));
+			this.data.get(day).add(new Switch("night", true, "23:59"));
+			this.data.get(day).add(new Switch("day", true, "23:59"));
+			this.data.get(day).add(new Switch("night", true, "23:59"));
+			this.data.get(day).add(new Switch("day", true, "23:59"));
 		}
 		/* Create the default switches settings*/
 		set_durations();
