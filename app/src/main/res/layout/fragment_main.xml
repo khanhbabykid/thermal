@@ -6,7 +6,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.group15.thermal.app.MainActivity$PlaceholderFragment">
+    tools:context="com.group15.thermal.app.WeekDetails$PlaceholderFragment">
 <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"

@@ -1,31 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
-    <corners
-        android:radius="14dp"
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-        />
-    <gradient
-        android:angle="45"
-        android:centerX="35%"
-        android:centerColor="#7995A8"
-        android:startColor="#E8E8E8"
-        android:endColor="#000000"
-        android:type="linear"
+    <item android:state_pressed="true"><shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+        <corners
+            android:radius="0dp"
+            />
+        <solid
+            android:color="#2B67AB"
+            />
+        <padding
+            android:left="0dp"
+            android:top="0dp"
+            android:right="0dp"
+            android:bottom="0dp"
+            />
+        <size
+            android:width="270dp"
+            android:height="60dp"
+            />
+    </shape></item>
+    <item android:state_focused="true"><shape android:shape="rectangle">
+        <corners android:radius="3dp" />
 
-        />
-    <padding
-        android:left="0dp"
-        android:top="0dp"
-        android:right="0dp"
-        android:bottom="0dp"
-        />
-    <size
-        android:width="270dp"
-        android:height="60dp"
-        />
-    <stroke
-        android:width="3dp"
-        android:color="#878787"
+        <solid android:color="#289C53" />
 
-        />
-</shape>
+        <padding android:bottom="0dp" android:left="0dp" android:right="0dp" android:top="0dp" />
+
+        <size android:height="53dp" android:width="250dp" />
+
+        <stroke android:width="3dp" android:color="#268C1B" />
+    </shape></item>
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+            <corners
+                android:radius="0dp"
+                />
+            <solid
+                android:color="#30B3DB"
+                />
+            <padding
+                android:left="0dp"
+                android:top="0dp"
+                android:right="0dp"
+                android:bottom="0dp"
+                />
+            <size
+                android:width="270dp"
+                android:height="60dp"
+                />
+        </shape></item>
+
+</selector>

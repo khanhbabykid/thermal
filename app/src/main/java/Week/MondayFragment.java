@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.group15.thermal.app.MainActivity;
+import com.group15.thermal.app.WeekDetails;
 import com.group15.thermal.app.OnRefreshListener;
 import com.group15.thermal.app.R;
 import com.group15.thermal.webservice.Switch;
@@ -48,7 +49,7 @@ public class MondayFragment extends Fragment implements View.OnClickListener,OnR
 
 
 	private void UpdateDisplay(){
-		for(Switch swbtn : MainActivity.weekProgram.getDaySwitches(title)){
+		for(Switch swbtn : WeekDetails.weekProgram.getDaySwitches(title)){
 			if(swbtn.getType().equalsIgnoreCase("day")){
 				night2day.add(swbtn.getTime());
 			}else{
@@ -63,12 +64,17 @@ public class MondayFragment extends Fragment implements View.OnClickListener,OnR
 			y.setText(day2night.get(i));
 			z.setOnClickListener(this);
 			y.setOnClickListener(this);
+//			if(z.getText()=="00:00"){
+//				z.setEnabled(false);
+//				y.setEnabled(false);
+//			}
 		}
+
 	}
 
 	@Override
 	public void onRefresh() {
-		if(MainActivity.currentFragment==1){
+		if(WeekDetails.currentFragment==1){
 			//Toast.makeText(getActivity(), "Monday Created!", Toast.LENGTH_SHORT).show();
 		}
 		while(this.isAdded()==false) {
@@ -86,50 +92,139 @@ public class MondayFragment extends Fragment implements View.OnClickListener,OnR
 	@Override
 	public void onClick(View view) {
 
-		if(view.getId()==R.id.savebtn){
+		int UsedButton = 0;
+		if (view.getId() == R.id.savebtn) {
 
 			//final WeekProgram putwkpr = new WeekProgram();
 
 			savebtn.setVisibility(View.INVISIBLE);
-		}else {
-			Button preUsedButton=null;
-			for(int i = 0; i<10;i++){
-				if(view.getId()==buttons[i]){
+		} else {
+			UsedButton = -1;
+			for (int i = 0; i < 10; i++) {
+				if (view.getId() == buttons[i]) {
 
-					usedbutton = (Button)thisview.findViewById(buttons[i]);
-					if(i==0){
-						preUsedButton = usedbutton;
-					}else{
-						preUsedButton = (Button)thisview.findViewById(buttons[i-1]);
+					usedbutton = (Button) thisview.findViewById(buttons[i]);
+					UsedButton = i;
+				}
+				break;
+			}
+		}
+
+		//Get and check time!!!
+		final int finalUsedint = UsedButton;
+		final TimePickerDialog.OnTimeSetListener gettime;
+		gettime = new TimePickerDialog.OnTimeSetListener() {
+			int callCount = 0;
+
+			@Override
+			public void onTimeSet(TimePicker timePicker, int i, int i2) {
+
+				if (callCount == 1) {
+					String time = "";
+					if (finalUsedint == 0) {
+
+						time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+						time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+						usedbutton.setText(time);
+						savebtn.setVisibility(View.VISIBLE);
+					} else if (finalUsedint == 5) {
+
+						Button a = (Button) thisview.findViewById(R.id.switchbtn1);
+						Button b = (Button) thisview.findViewById(R.id.switchbtn2);
+						Integer postTime = Integer.parseInt(b.getText().toString().split(":")[0] +
+								b.getText().toString().split(":")[1]);
+						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
+								a.getText().toString().split(":")[1]);
+						Integer nowTime = i * 100 + i2;
+						if (postTime == 0)
+							postTime = 2399;
+						if (preTime < nowTime && nowTime < postTime) {
+
+							time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+							time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+							usedbutton.setText(time);
+							savebtn.setVisibility(View.VISIBLE);
+						} else {
+							Toast.makeText(getActivity(), "Use another value", Toast.LENGTH_SHORT).show();
+						}
+
+					} else if (finalUsedint < 5) {
+						Button a = (Button) thisview.findViewById(buttons[finalUsedint + 4]);
+						Button b = (Button) thisview.findViewById(buttons[finalUsedint + 5]);
+						Integer postTime = Integer.parseInt(b.getText().toString().split(":")[0] +
+								b.getText().toString().split(":")[1]);
+						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
+								a.getText().toString().split(":")[1]);
+						Integer nowTime = i * 100 + i2;
+
+						if (preTime == 0) {
+							Toast.makeText(getActivity(), "Set previous button first!", Toast.LENGTH_SHORT).show();
+						} else if (preTime < nowTime && nowTime < postTime) {
+							time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+							time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+							usedbutton.setText(time);
+							savebtn.setVisibility(View.VISIBLE);
+						} else {
+							Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
+						}
+					} else if (finalUsedint < 9) {
+						Button a = (Button) thisview.findViewById(buttons[finalUsedint - 5]);
+						Button b = (Button) thisview.findViewById(buttons[finalUsedint - 4]);
+						Integer postTime = Integer.parseInt(b.getText().toString().split(":")[0] +
+								b.getText().toString().split(":")[1]);
+						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
+								a.getText().toString().split(":")[1]);
+						Integer nowTime = i * 100 + i2;
+						if (preTime == 0) {
+							Toast.makeText(getActivity(), "Set previous button first!", Toast.LENGTH_SHORT).show();
+						} else if (postTime == 0) {
+							postTime = 2399;
+							if (preTime < nowTime && nowTime < postTime) {
+								time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+								time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+								usedbutton.setText(time);
+								savebtn.setVisibility(View.VISIBLE);
+							} else {
+								Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
+							}
+						} else if (preTime < nowTime && nowTime < postTime) {
+							time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+							time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+							usedbutton.setText(time);
+							savebtn.setVisibility(View.VISIBLE);
+						} else {
+							Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
+						}
+
+					} else if (finalUsedint == 9) {
+						Button a = (Button) thisview.findViewById(buttons[finalUsedint - 5]);
+						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
+								a.getText().toString().split(":")[1]);
+						Integer nowTime = i * 100 + i2;
+						if (preTime == 0) {
+							Toast.makeText(getActivity(), "Set previous button first!", Toast.LENGTH_SHORT).show();
+						} else if (preTime < nowTime) {
+							time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+							time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+							usedbutton.setText(time);
+							savebtn.setVisibility(View.VISIBLE);
+						} else {
+							Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
+						}
+
 					}
-					break;
+
+					callCount++;
 				}
 			}
+		};
 
-			//Get and check time!!!
-			final Button finalpreUsedButton = preUsedButton;
-			final TimePickerDialog.OnTimeSetListener gettime;
-			gettime = new TimePickerDialog.OnTimeSetListener() {
-				@Override
-				public void onTimeSet(TimePicker timePicker, int i, int i2) {
-
-					final String[] time = new String[1];
-
-					time[0] = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
-					time[0] = time[0] + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
-					usedbutton.setText(time[0]);
-					savebtn.setVisibility(View.VISIBLE);
-
-				}
-			};
-
-			TimePickerDialog picker = new TimePickerDialog(getActivity(), gettime,
-					new Integer(usedbutton.getText().toString().split(":")[0]),
-					new Integer(usedbutton.getText().toString().split(":")[1]), true);
-			picker.setCanceledOnTouchOutside(true);
-
-
-			picker.show();
-		}
+		TimePickerDialog picker = new TimePickerDialog(getActivity(), gettime,
+				new Integer(usedbutton.getText().toString().split(":")[0]),
+				new Integer(usedbutton.getText().toString().split(":")[1]), true);
+		picker.setCanceledOnTouchOutside(true);
+		picker.show();
 	}
+
 }
+

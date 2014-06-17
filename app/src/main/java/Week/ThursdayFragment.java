@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.group15.thermal.app.MainActivity;
+import com.group15.thermal.app.WeekDetails;
 import com.group15.thermal.app.OnRefreshListener;
 import com.group15.thermal.app.R;
 import com.group15.thermal.webservice.Switch;
@@ -48,7 +48,7 @@ public class ThursdayFragment extends Fragment implements View.OnClickListener,O
 
 
 	private void UpdateDisplay(){
-		for(Switch swbtn : MainActivity.weekProgram.getDaySwitches(title)){
+		for(Switch swbtn : WeekDetails.weekProgram.getDaySwitches(title)){
 			if(swbtn.getType().equalsIgnoreCase("day")){
 				night2day.add(swbtn.getTime());
 			}else{
@@ -68,7 +68,7 @@ public class ThursdayFragment extends Fragment implements View.OnClickListener,O
 
 	@Override
 	public void onRefresh() {
-		if(MainActivity.currentFragment==1){
+		if(WeekDetails.currentFragment==1){
 			//Toast.makeText(getActivity(), "Monday Created!", Toast.LENGTH_SHORT).show();
 		}
 		while(this.isAdded()==false) {

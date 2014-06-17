@@ -30,7 +30,7 @@ import Week.TuesdayFragment;
 import Week.WednesdayFragment;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
+public class WeekDetails extends ActionBarActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -130,7 +130,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 			@Override
 			public void run() {
 				/* TODO Auto-generated method stub */
-				Toast.makeText(MainActivity.this, toast, length==1?Toast.LENGTH_SHORT:Toast.LENGTH_LONG).show();
+				Toast.makeText(WeekDetails.this, toast, length==1?Toast.LENGTH_SHORT:Toast.LENGTH_LONG).show();
 
 			}
 		});
