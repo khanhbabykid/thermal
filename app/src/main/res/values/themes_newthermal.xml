@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="newThermal" parent="@style/_newThermal"/>
+
+  <style name="_newThermal" parent="Theme.AppCompat.Light">
+
+    <item name="android:editTextStyle">@style/EditTextnewThermal</item>
+
+    <item name="android:checkboxStyle">@style/CheckBoxnewThermal</item>
+
+    <item name="android:radioButtonStyle">@style/RadioButtonnewThermal</item>
+
+    <item name="android:buttonStyle">@style/ButtonnewThermal</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonnewThermal</item>
+
+    <item name="android:spinnerStyle">@style/SpinnernewThermal</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemnewThermal</item>
+
+    <item name="android:buttonStyleToggle">@style/TogglenewThermal</item>
+
+    <item name="android:listViewStyle">@style/ListViewnewThermal</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewnewThermal.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemnewThermal</item>
+
+  </style>
+
+</resources>

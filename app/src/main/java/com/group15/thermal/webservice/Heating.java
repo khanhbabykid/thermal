@@ -184,6 +184,8 @@ public class Heating {
 	 *            getWeekProgram() is implemented which return a Week
 	 *            object that can be easily altered.
 	 */
+	public static String DAY = "day",TIME="time",CURRENT_TEMP = "currentTemperature",
+					DAY_TEMP="dayTemperature", NIGHT_TEMP="nightTemperature", WEEK_STATE="weekProgramState";
 	public static String get(String attribute_name) throws ConnectException,
 			IllegalArgumentException {
 		// If XML File does not contain the specified attribute, than

@@ -30,7 +30,7 @@ import Week.TuesdayFragment;
 import Week.WednesdayFragment;
 
 
-public class WeekDetails extends ActionBarActivity implements ActionBar.TabListener {
+public class WeekDetails extends ActionBarActivity implements ActionBar.TabListener, OnRefreshListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -54,9 +54,11 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+	    actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -79,6 +81,7 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
             }
         });
 
+
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
@@ -97,6 +100,11 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 		    GetThisWeekProgram();
 	    } catch (InterruptedException e) {
 		    e.printStackTrace();
+	    }
+	    Bundle b = getIntent().getExtras();
+	    if(b!=null){
+			int a = b.getInt("which_one");
+		    mViewPager.setCurrentItem(a);
 	    }
     }
 
@@ -139,7 +147,7 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -186,6 +194,11 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
+
+	@Override
+	public void onRefresh() {
+
+	}
 
 
 

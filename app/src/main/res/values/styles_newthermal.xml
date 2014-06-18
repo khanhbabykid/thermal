@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="EditTextnewThermal" parent="android:Widget.EditText">
+	  <item name="android:background">@drawable/newthermal_edit_text_holo_light</item>
+	  <item name="android:textColor">#000000</item>
+  </style>
+
+  <style name="CheckBoxnewThermal" parent="android:Widget.CompoundButton.CheckBox">
+      <item name="android:button">@drawable/newthermal_btn_check_holo_light</item>
+  </style>
+
+  <style name="RadioButtonnewThermal" parent="android:Widget.CompoundButton.RadioButton">
+      <item name="android:button">@drawable/newthermal_btn_radio_holo_light</item>
+  </style>
+
+  <style name="ButtonnewThermal" parent="android:Widget.Button">
+	  <item name="android:background">@drawable/newthermal_btn_default_holo_light</item>
+	  <item name="android:minHeight">48dip</item>
+	  <item name="android:minWidth">64dip</item>
+	  <item name="android:textColor">#000000</item>
+  </style>
+
+  <style name="ImageButtonnewThermal" parent="android:Widget.ImageButton">
+	  <item name="android:background">@drawable/newthermal_btn_default_holo_light</item>
+  </style>
+
+  <style name="SpinnernewThermal" parent="android:Widget.Spinner">
+      <item name="android:background">@drawable/newthermal_spinner_background_holo_light</item>
+      <item name="android:dropDownSelector">@drawable/newthermal_list_selector_holo_light</item>
+  </style>
+
+  <style name="SpinnerDropDownItemnewThermal" parent="android:Widget.DropDownItem.Spinner">
+      <item name="android:checkMark">@drawable/newthermal_btn_radio_holo_light</item>
+  </style>
+  <style name="TabnewThermal">
+      <item name="android:gravity">center_horizontal</item>
+      <item name="android:paddingLeft">16dip</item>
+      <item name="android:paddingRight">16dip</item>
+      <item name="android:background">@drawable/newthermal_tab_indicator_holo</item>
+      <item name="android:layout_width">0dip</item>
+      <item name="android:layout_weight">1</item>
+      <item name="android:minWidth">80dip</item>
+  </style>
+
+  <style name="TabTextnewThermal">
+	  <item name="android:textColor">#000000</item>
+      <item name="android:textSize">12sp</item>
+      <item name="android:textStyle">bold</item>
+      <!-- v14 <item name="android:textAllCaps">true</item> -->
+      <item name="android:ellipsize">marquee</item>
+      <item name="android:maxLines">2</item>
+      <item name="android:maxWidth">180dip</item>
+  </style>
+
+  <style name="TogglenewThermal" parent="android:Widget.Button.Toggle">
+      <item name="android:background">@drawable/newthermal_btn_toggle_holo_light</item>
+      <item name="android:minHeight">48dip</item>
+	  <item name="android:textColor">#000000</item>
+  </style>
+
+  <style name="ListViewnewThermal" parent="android:Widget.ListView">
+      <item name="android:listSelector">@drawable/newthermal_list_selector_holo_light</item>
+  </style>
+
+  <style name="ListViewnewThermal.White" parent="android:Widget.ListView.White">
+      <item name="android:listSelector">@drawable/newthermal_list_selector_holo_light</item>
+  </style>
+
+  <style name="SpinnerItemnewThermal" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+      <item name="android:textColor">#000000</item>
+  </style>
+
+</resources>

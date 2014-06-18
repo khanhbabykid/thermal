@@ -8,6 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.group15.thermal.app.WeekDetails$PlaceholderFragment">
 <LinearLayout
+    android:layout_above="@+id/save"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" android:id="@+id/linearLayout" android:layout_gravity="center"
@@ -23,7 +24,7 @@
         android:layout_marginBottom="25dip"/>
 
     <TableLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
@@ -35,21 +36,23 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:paddingLeft="30dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:text="Day to Night"
+                android:gravity="center_horizontal"
                 android:textSize="20sp"
+                android:layout_marginRight="10dp"
                 android:textAlignment="center" />
 
             <TextView
-                android:paddingLeft="30dp"
                 android:layout_width="fill_parent"
                 android:layout_gravity="center_horizontal|right"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="0.5"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
                 android:textSize="20sp"
+                android:gravity="center_horizontal"
                 android:text="Night to Day"
                 android:textAlignment="center" />
 
@@ -168,12 +171,13 @@
 </LinearLayout>
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-
+        android:id="@+id/save"
         >
         <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:text="Save"
             android:textAlignment="center"
-            android:textSize="23sp"
+            android:textSize="25sp"
+            android:textColor="#FFFFFFFF"
             android:visibility="invisible"
             android:id="@+id/savebtn"
             />

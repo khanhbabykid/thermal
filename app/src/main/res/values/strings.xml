@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Thermal Status 1</string>
+    <string name="app_name">Thermal Status</string>
     <string name="title_section1">Monday</string>
     <string name="title_section2">Tuesday</string>
     <string name="title_section3">Wednesday</string>

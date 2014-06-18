@@ -5,4 +5,5 @@ package com.group15.thermal.app;
  */
 public interface OnRefreshListener {
 	public void onRefresh();
+
 }
