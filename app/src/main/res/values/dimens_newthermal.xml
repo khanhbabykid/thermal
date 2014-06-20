@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="tab_host_default_height">48dp</dimen>
+    <dimen name="Specific3dip">3dip</dimen>
+    <dimen name="degreeSize">12dip</dimen>
+    <dimen name="degreeSize24">24dip</dimen>
+    <dimen name="degreeSize36">36dip</dimen>
+    <dimen name="size72">72dip</dimen>
 </resources>

@@ -100,7 +100,6 @@ public class FridayFragment extends Fragment implements View.OnClickListener,OnR
 			gettime = new TimePickerDialog.OnTimeSetListener() {
 				@Override
 				public void onTimeSet(TimePicker timePicker, int i, int i2) {
-
 					String time;
 					time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
 					time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));

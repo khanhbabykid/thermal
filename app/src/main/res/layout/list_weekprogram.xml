@@ -22,40 +22,32 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             >
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="Monday Settings"
-                android:textSize="30sp"
-                android:gravity="center"
-                android:layout_marginBottom="20dip"/>
+
             //...insert stuff here
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/footer"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="20dp"
-                        >
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="#030101"
-                style="@android:style/Widget.Holo.Button.Borderless"
-                android:text="Today"/>
-            <View android:layout_width="3dp" android:layout_height="match_parent"
-                android:background="@drawable/back_white_divider"/>
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#26130b"
-                    style="@android:style/Widget.Holo.Button.Borderless"
-                android:text="Help"/>
-            //...insert stuff here
-        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:id="@+id/footer"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginTop="20dp"-->
+                        <!-->-->
+            <!--<Button android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:textColor="#030101"-->
+                <!--style="@android:style/Widget.Holo.Button.Borderless"-->
+                <!--android:text="Today"/>-->
+            <!--<View android:layout_width="3dp" android:layout_height="match_parent"-->
+                <!--android:background="@drawable/back_white_divider"/>-->
+            <!--<Button android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:textColor="#26130b"-->
+                    <!--style="@android:style/Widget.Holo.Button.Borderless"-->
+                <!--android:text="Help"/>-->
+            <!--//...insert stuff here-->
+        <!--</LinearLayout>-->
 
         <TableLayout
             android:layout_width="wrap_content"
@@ -68,6 +60,16 @@
             android:orientation="vertical" android:visibility="visible"
             android:layout_gravity="center_horizontal" android:layout_below="@+id/header"
             android:layout_centerHorizontal="true" android:background="#fffffb">
+            <TableRow
+                ><TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="  Week Program  "
+                android:textSize="30sp"
+                android:gravity="center"
+                android:layout_marginBottom="20dip"/></TableRow>
             <TableRow
                 android:layout_width="wrap_content"
                 android:layout_weight="1"

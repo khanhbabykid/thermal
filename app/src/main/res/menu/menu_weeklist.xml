@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.group15.thermal.app.WeekDetails" >
+    <item android:id="@+id/weekbtn"
+          android:title="Week Program"
+          android:orderInCategory="99"
+          app:showAsAction="always"/>
+    <item android:id="@+id/action_help"
+        android:title="@string/action_help"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        />
+
+
+</menu>

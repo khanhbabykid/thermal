@@ -1,6 +1,6 @@
 /**
  * @author HTI students, Spring 2013, adjusted by N.Stash
- * 
+ *
  */
 package com.group15.thermal.webservice;
 
@@ -13,21 +13,22 @@ public class WeekProgram {
 	corresponding set of switches */
 	Map<String, ArrayList<Switch>> data = new HashMap<String, ArrayList<Switch>>();
 	private int[] nr_switches_active;
-	public static String[] valid_days = { "Monday", "Tuesday", "Wednesday",
-			"Thursday", "Friday", "Saturday", "Sunday" };
+	public static String[] valid_days = {"Monday", "Tuesday", "Wednesday",
+			"Thursday", "Friday", "Saturday", "Sunday"};
 
 	/**
 	 * Constructor
 	 */
 	public WeekProgram() {
+
 		setDefault();
 	}
-	
+
 	/**
 	 * Creates the default week program
 	 */
 	public void setDefault() {
-		System.out.println("set default");
+		//System.out.println("set default");
 		nr_switches_active = new int[7];
 		for (int i = 0; i < this.valid_days.length; i++) {
 			nr_switches_active[i] = 10;
@@ -49,14 +50,25 @@ public class WeekProgram {
 	}
 
 
-	public ArrayList<Switch> getDaySwitches(String day){
+	public void setDaySwitches(String day, ArrayList<Switch> switches) {
+
+		check_duplicates(switches);
+		this.data.put(day, switches);
+		set_durations();
+	}
+
+	public ArrayList<Switch> getDaySwitches(String day) {
+
 		return this.data.get(day);
 	}
+
 	public int get_nr_switches_active(int i) {
+
 		return this.nr_switches_active[i];
 	}
 
 	public void set_durations() {
+
 		for (int i = 0; i < this.valid_days.length; i++) {
 
 			for (int j = 0; j < data.get(valid_days[i]).size() - 1; j++) {
@@ -66,7 +78,7 @@ public class WeekProgram {
 							.setDur(data.get(valid_days[i]).get(j + 1)
 									.getTime_Int()
 									- data.get(valid_days[i]).get(j)
-											.getTime_Int());
+									.getTime_Int());
 				else
 					data.get(valid_days[i])
 							.get(j)
@@ -83,17 +95,19 @@ public class WeekProgram {
 	}
 
 	public void set_switches_active(int i, int nr) {
+
 		this.nr_switches_active[i] = nr;
 	}
 
 	/**
 	 * Setting switches. Switches list should always exactly consist out of 10 elements.
+	 *
 	 * @param day
 	 * @param switches_list
 	 * @param nr_switches
 	 */
 	public void setSwitches(String day, ArrayList<Switch> switches_list,
-			int nr_switches) {
+	                        int nr_switches) {
 		// Validate input???
 		for (String d : this.valid_days) {
 			if (d.equalsIgnoreCase(day)) {
@@ -107,6 +121,7 @@ public class WeekProgram {
 	}
 
 	public String toXML() throws NullPointerException {
+
 		StringBuilder build = new StringBuilder();
 		String prefix;
 		String suffix = "</week_program>";
@@ -143,7 +158,8 @@ public class WeekProgram {
 
 	//To Add Switches
 	public boolean AddSwitch(int start_time, int end_time, String type,
-			String day) {
+	                         String day) {
+
 		int selected_day = 0;
 		for (int i = 0; i < valid_days.length; i++)
 			if (day == valid_days[i])
@@ -215,6 +231,7 @@ public class WeekProgram {
 	}
 
 	public void check_duplicates(ArrayList<Switch> new_switches) {
+
 		for (int i = 0; i < new_switches.size() - 1; i++) {
 			if (new_switches.get(i).getState()
 					&& new_switches.get(i + 1).getState())
@@ -225,16 +242,17 @@ public class WeekProgram {
 					if (new_switches.get(new_switches.size() - 2).getType()
 							.equalsIgnoreCase("day"))
 						new_switches.set(new_switches.size() - 1, new Switch(
-								"night", false, "23:00"));
+								"night", true, "00:00"));
 					else
 						new_switches.set(new_switches.size() - 1, new Switch(
-								"day", false, "23:00"));
+								"day", true, "00:00"));
 					i -= 1;
 				}
 		}
 	}
 
 	public void RemoveFirstSwitch(String day) {
+
 		for (int i = 0; i < 9; i++) {
 			data.get(day).set(i, data.get(day).get(i + 1));
 		}
@@ -250,6 +268,7 @@ public class WeekProgram {
 	}
 
 	public void RemoveSwitch(int i, String day) {
+
 		for (int j = i; j < data.get(day).size() - 1; j++) {
 			data.get(day).set(j, data.get(day).get(j + 1));
 		}
@@ -265,6 +284,7 @@ public class WeekProgram {
 	}
 
 	private String int_time_to_string(int time_var) {
+
 		String hours = Integer.toString(time_var / 100);
 		String mins = Integer.toString(time_var - time_var / 100 * 100);
 		if (time_var < 1000)

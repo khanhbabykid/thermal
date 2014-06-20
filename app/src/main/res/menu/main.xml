@@ -1,16 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.group15.thermal.app.WeekDetails" >
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.group15.thermal.app.WeekDetails"
+    >
     <item android:id="@+id/refreshall"
-          android:title="Refresh All"
           android:orderInCategory="101"
-          android:showAsAction="never"/>
-
-
+          app:showAsAction="never"
+          android:title="Refresh All"/>
     <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-
+          android:orderInCategory="100"
+          android:title="@string/action_settings"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_help"
+          android:orderInCategory="102"
+          android:title="@string/action_help"
+          app:showAsAction="never"
+        />
 </menu>

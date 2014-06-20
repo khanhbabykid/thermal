@@ -1,24 +1,33 @@
 package com.group15.thermal.app;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
  * Created by Nguyen Quoc Khanh on 17-Jun-14.
  */
-public class WeekActivity extends Activity implements View.OnClickListener {
+public class WeekActivity extends Fragment implements View.OnClickListener {
 	int[] buttons = {R.id.monbtn,R.id.tuebtn,R.id.wedbtn,R.id.thubtn,R.id.fribtn,R.id.satbtn,R.id.sunbtn};
-	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.list_weekprogram);
-		super.onCreate(savedInstanceState);
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.list_weekprogram,container,false);
 		for(int i =0;i<7;i++){
-			Button a = (Button)findViewById(buttons[i]);
+			Button a = (Button)rootView.findViewById(buttons[i]);
 			a.setOnClickListener(this);
 		}
+		return rootView;
+	}
 
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+
+		super.onViewCreated(view, savedInstanceState);
 	}
 
 	@Override
@@ -32,7 +41,7 @@ public class WeekActivity extends Activity implements View.OnClickListener {
 	}
 	private void setintent(int i){
 		Intent a=null;
-		a = new Intent(this,WeekDetails.class);
+		a = new Intent(getActivity(),WeekDetails.class);
 		switch (i){
 			case 0:
 				a.putExtra("which_one",0);

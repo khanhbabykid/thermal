@@ -28,5 +28,5 @@
     <item android:state_focused="true"
         android:drawable="@drawable/newthermal_btn_default_disabled_focused_holo_light" />
     <item
-         android:drawable="@drawable/newthermal_btn_default_disabled_holo_light" />
+         android:drawable="@drawable/newthermal_btn_default_normal_holo_light" />
 </selector>

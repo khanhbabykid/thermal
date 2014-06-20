@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="DAY" parent="@style/_DAY"/>
+
+  <style name="_DAY" parent="Theme.Actday">
+
+    <item name="android:editTextStyle">@style/EditTextDAY</item>
+
+    <item name="android:buttonStyle">@style/ButtonnewThermal</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonDAY</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleDAY</item>
+
+  </style>
+
+</resources>

@@ -11,12 +11,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.group15.thermal.app.WeekDetails;
 import com.group15.thermal.app.OnRefreshListener;
 import com.group15.thermal.app.R;
+import com.group15.thermal.app.WeekDetails;
+import com.group15.thermal.webservice.Heating;
 import com.group15.thermal.webservice.Switch;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MondayFragment extends Fragment implements View.OnClickListener, OnRefreshListener {
 
@@ -35,6 +37,7 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 		TextView titleview = (TextView) rootView.findViewById(R.id.section_label);
 		titleview.setText(title + " Settings");
+		setRetainInstance(true);
 		return rootView;
 	}
 
@@ -54,6 +57,8 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 
 	private void UpdateDisplay() {
 
+		ArrayList<Switch> swbtns = null;
+		swbtns = WeekDetails.weekProgram.getDaySwitches(title);
 		for (Switch swbtn : WeekDetails.weekProgram.getDaySwitches(title)) {
 			if (swbtn.getType().equalsIgnoreCase("day")) {
 				night2day.add(swbtn.getTime());
@@ -69,10 +74,6 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 			y.setText(day2night.get(i));
 			z.setOnClickListener(this);
 			y.setOnClickListener(this);
-//			if(z.getText()=="00:00"){
-//				z.setEnabled(false);
-//				y.setEnabled(false);
-//			}
 		}
 
 	}
@@ -82,13 +83,6 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 
 		if (WeekDetails.currentFragment == 1) {
 			//Toast.makeText(getActivity(), "Monday Created!", Toast.LENGTH_SHORT).show();
-		}
-		while (this.isAdded() == false) {
-			try {
-				wait(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 		UpdateDisplay();
 		System.out.println("Updated");
@@ -100,7 +94,8 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 
 		int UsedButton = 0;
 		if (view.getId() == R.id.savebtn) {
-
+			putWeekProgram();
+			showToast(2);
 			//final WeekProgram putwkpr = new WeekProgram();
 
 			savebtn.setVisibility(View.INVISIBLE);
@@ -108,121 +103,85 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 			UsedButton = -1;
 			for (int i = 0; i < 10; i++) {
 				if (view.getId() == buttons[i]) {
-
 					usedbutton = (Button) thisview.findViewById(buttons[i]);
 					UsedButton = i;
+					break;
 				}
-				break;
+
 			}
-		}
+			//Get and check time!!!
+			final int finalUsedint = UsedButton;
+			TimePickerDialog.OnTimeSetListener gettime;
+			gettime = new TimePickerDialog.OnTimeSetListener() {
+				int callCount = 0;
 
-		//Get and check time!!!
-		final int finalUsedint = UsedButton;
-		final TimePickerDialog.OnTimeSetListener gettime;
-		gettime = new TimePickerDialog.OnTimeSetListener() {
-			int callCount = 0;
+				@Override
+				public void onTimeSet(TimePicker timePicker, int i, int i2) {
 
-			@Override
-			public void onTimeSet(TimePicker timePicker, int i, int i2) {
-
-				if (callCount == 1) {
-					String time = "";
-					if (finalUsedint == 0) {
-						setTime(i, i2);
-					} else if (finalUsedint == 5) {
-
-						Button a = (Button) thisview.findViewById(R.id.switchbtn1);
-						Button b = (Button) thisview.findViewById(R.id.switchbtn2);
-						Integer postTime = Integer.parseInt(b.getText().toString().split(":")[0] +
-								b.getText().toString().split(":")[1]);
-						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
-								a.getText().toString().split(":")[1]);
-						Integer nowTime = i * 100 + i2;
-						if (postTime == 0)
-							postTime = 2399;
-						if (preTime < nowTime && nowTime < postTime) {
-							setTime(i,i2);
-						} else {
-							showToast(2);
+					if (callCount == 1) {
+						if (finalUsedint == 0) {
+							setTime(i, i2);
+							sortTimes(1);
+						} else if (finalUsedint >= 1 && finalUsedint <= 4) {
+							setTime(i, i2);
+							sortTimes(1);
+						} else if (finalUsedint >= 5 && finalUsedint <= 9) {
+							setTime(i, i2);
+							sortTimes(2);
 						}
-
-					} else if (finalUsedint < 5) {
-						Button a = (Button) thisview.findViewById(buttons[finalUsedint + 4]);
-						Button b = (Button) thisview.findViewById(buttons[finalUsedint + 5]);
-						Integer postTime = Integer.parseInt(b.getText().toString().split(":")[0] +
-								b.getText().toString().split(":")[1]);
-						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
-								a.getText().toString().split(":")[1]);
-						Integer nowTime = i * 100 + i2;
-
-						if (preTime == 0) {
-							Toast.makeText(getActivity(), "Set previous button first!", Toast.LENGTH_SHORT).show();
-						} else if (preTime < nowTime && nowTime < postTime) {
-							time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
-							time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
-							usedbutton.setText(time);
-							savebtn.setVisibility(View.VISIBLE);
-						} else {
-							Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
-						}
-					} else if (finalUsedint < 9) {
-						Button a = (Button) thisview.findViewById(buttons[finalUsedint - 5]);
-						Button b = (Button) thisview.findViewById(buttons[finalUsedint - 4]);
-						Integer postTime = Integer.parseInt(b.getText().toString().split(":")[0] +
-								b.getText().toString().split(":")[1]);
-						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
-								a.getText().toString().split(":")[1]);
-						Integer nowTime = i * 100 + i2;
-						if (preTime == 0) {
-							Toast.makeText(getActivity(), "Set previous button first!", Toast.LENGTH_SHORT).show();
-						} else if (postTime == 0) {
-							postTime = 2399;
-							if (preTime < nowTime && nowTime < postTime) {
-								time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
-								time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
-								usedbutton.setText(time);
-								savebtn.setVisibility(View.VISIBLE);
-							} else {
-								Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
-							}
-						} else if (preTime < nowTime && nowTime < postTime) {
-							time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
-							time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
-							usedbutton.setText(time);
-							savebtn.setVisibility(View.VISIBLE);
-						} else {
-							Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
-						}
-
-					} else if (finalUsedint == 9) {
-						Button a = (Button) thisview.findViewById(buttons[finalUsedint - 5]);
-						Integer preTime = Integer.parseInt(a.getText().toString().split(":")[0] +
-								a.getText().toString().split(":")[1]);
-						Integer nowTime = i * 100 + i2;
-						if (preTime == 0) {
-							Toast.makeText(getActivity(), "Set previous button first!", Toast.LENGTH_SHORT).show();
-						} else if (preTime < nowTime) {
-							time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
-							time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
-							usedbutton.setText(time);
-							savebtn.setVisibility(View.VISIBLE);
-						} else {
-							Toast.makeText(getActivity(), "Can't set value", Toast.LENGTH_SHORT).show();
-						}
-
 					}
-
 					callCount++;
 				}
+			};
+			TimePickerDialog picker = new TimePickerDialog(thisview.getContext(), gettime,
+					new Integer(usedbutton.getText().toString().split(":")[0]),
+					new Integer(usedbutton.getText().toString().split(":")[1]), true);
+			picker.show();
+		}
+	}
+
+	private void sortTimes(int type) {
+
+		if (type == 1) {
+			System.out.println("Sorted??");
+			ArrayList<Integer> allTime = new ArrayList<Integer>(0);
+			for (int j = 0; j < 5; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int eleTime = Integer.parseInt(c.getText().toString().split(":")[0] +
+						c.getText().toString().split(":")[1]);
+				allTime.add(eleTime);
 			}
-		};
+			Collections.sort(allTime);
+			for (int j = 0; j < 5; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int i = (allTime.get(j) / 100);
+				int i2 = (allTime.get(j) % 100);
+				String time;
+				time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+				time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+				c.setText(time);
 
-
-		TimePickerDialog picker = new TimePickerDialog(getActivity(), gettime,
-				new Integer(usedbutton.getText().toString().split(":")[0]),
-				new Integer(usedbutton.getText().toString().split(":")[1]), true);
-		picker.setCanceledOnTouchOutside(true);
-		picker.show();
+			}
+			System.out.println("Sorted!!");
+		} else if (type == 2) {
+			ArrayList<Integer> allTime = new ArrayList<Integer>(0);
+			for (int j = 5; j < 10; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int eleTime = Integer.parseInt(c.getText().toString().split(":")[0] +
+						c.getText().toString().split(":")[1]);
+				allTime.add(eleTime);
+			}
+			Collections.sort(allTime);
+			for (int j = 5; j < 10; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int i = (allTime.get(j - 5) / 100);
+				int i2 = (allTime.get(j - 5) % 100);
+				String time;
+				time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+				time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+				c.setText(time);
+			}
+		}
 	}
 
 	private void setTime(int i, int i2) {
@@ -230,8 +189,10 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 		String time;
 		time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
 		time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+		String oldtime = usedbutton.getText().toString();
 		usedbutton.setText(time);
-		savebtn.setVisibility(View.VISIBLE);
+		if (!oldtime.equals(time))
+			savebtn.setVisibility(View.VISIBLE);
 	}
 
 	private void showToast(int status) {
@@ -245,11 +206,49 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 				text = "Set previous button first!";
 				break;
 			case 2:
-				text = "As you wished!";
+				text = "Updated new week program";
 				break;
 		}
-		Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+		Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
 	}
 
+	private void checkDuplicates(int type) {
+
+		switch (type) {
+			case 1:
+				for (int i = 1; i < 5; i++) {
+
+				}
+				break;
+			case 2:
+
+				break;
+		}
+	}
+
+	private boolean putWeekProgram() {
+
+		ArrayList<Switch> newSwitches = new ArrayList<Switch>();
+		for (int i = 0; i < 5; i++) {
+			Button tempbtn1 = (Button) thisview.findViewById(buttons[i]);
+			Button tempbtn2 = (Button) thisview.findViewById(buttons[i + 5]);
+			newSwitches.add(new Switch("night", true, tempbtn1.getText().toString()));
+			newSwitches.add(new Switch("day", true, tempbtn2.getText().toString()));
+		}
+		WeekDetails.weekProgram.setDaySwitches(title, newSwitches);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+
+				try {
+					Heating.setWeekProgram(WeekDetails.weekProgram);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
+		return false;
+	}
 }
 

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#CCCCCC" android:orientation="vertical">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+
+        >
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="#FFFFFFFF"
+            android:orientation="vertical"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            >
+
+            //...insert stuff here
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal"
+            >
+            <Button style="@android:style/Widget.Holo.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Today"
+                    android:textSize="30sp"
+                    android:paddingBottom="6dp"
+                    android:textColor="#030101"/>
+            <View android:layout_width="3dp" android:layout_height="match_parent"
+                  android:background="@drawable/back_white_divider"/>
+            <Button style="@android:style/Widget.Holo.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Help"
+                    android:paddingBottom="6dp"
+                    android:textSize="30sp"
+                    android:textColor="#26130b"/>
+            //...insert stuff here
+        </LinearLayout>
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:scrollbars="none" android:layout_above="@+id/footer"
+            android:layout_below="@+id/header">
+            <LinearLayout android:layout_width="fill_parent"
+                          android:layout_height="fill_parent"
+                          android:orientation="vertical"
+                >
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/header"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#fffffb"
+
+                    android:orientation="vertical" android:paddingBottom="20dp"
+                    android:paddingLeft="9dp" android:paddingRight="9dp"
+                    android:paddingTop="15dp" android:visibility="visible">
+                    <TableRow><TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="20dip"
+                        android:layout_marginTop="30dp"
+                        android:gravity="center"
+                        android:text="Week Programs"
+                        android:textSize="50sp"/></TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        >
+                        <Button
+                            android:id="@+id/monbtn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:width="372dp"
+                            android:textSize="30sp"
+                            android:layout_margin="3dp"
+                            android:text="Monday"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+
+                            />
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:id="@+id/tuebtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:width="372dp"
+                            android:textSize="30sp"
+                            android:layout_margin="3dp"
+                            android:text="Tuesday"
+                            android:textAlignment="center" android:textColor="#FFFF"/>
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        >
+                        <Button
+                            android:width="372dp"
+                            android:textSize="30sp"
+                            android:layout_margin="3dp"
+                            android:id="@+id/wedbtn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:text="Wednesday"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+
+                            />
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:width="372dp"
+                            android:textSize="30sp"
+                            android:layout_margin="3dp"
+                            android:id="@+id/thubtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Thursday"
+                            android:textAlignment="center" android:textColor="#FFFF"/>
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        >
+                        <Button
+                            android:width="372dp"
+                            android:textSize="30sp"
+                            android:layout_margin="3dp"
+                            android:id="@+id/fribtn"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:text="Friday"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+
+                            />
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:width="372dp"
+                            android:textSize="30sp"
+                            android:layout_margin="3dp"
+                            android:id="@+id/satbtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Saturday"
+                            android:textAlignment="center" android:textColor="#FFFF"/>
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:width="372dp"
+                            android:textSize="30sp"
+                            android:layout_margin="3dp"
+                            android:id="@+id/sunbtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Sunday"
+                            android:textAlignment="center" android:textColor="#FFFF"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</LinearLayout>
