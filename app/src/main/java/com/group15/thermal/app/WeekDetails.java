@@ -11,12 +11,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 import com.group15.thermal.webservice.CorruptWeekProgramException;
 import com.group15.thermal.webservice.Heating;
 import com.group15.thermal.webservice.WeekProgram;
 
+import java.lang.reflect.Field;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +108,18 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 		if (b != null) {
 			int a = b.getInt("which_one");
 			mViewPager.setCurrentItem(a);
+		}
+		//Force overflow menu
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception ex) {
+			// Ignore
+
 		}
 	}
 

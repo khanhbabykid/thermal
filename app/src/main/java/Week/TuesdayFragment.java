@@ -105,12 +105,11 @@ public class TuesdayFragment extends Fragment implements View.OnClickListener,On
 			final int finalUsedint = UsedButton;
 			TimePickerDialog.OnTimeSetListener gettime;
 			gettime = new TimePickerDialog.OnTimeSetListener() {
-				int callCount = 0;
-
+				boolean fired=false;
 				@Override
 				public void onTimeSet(TimePicker timePicker, int i, int i2) {
-
-					if (callCount == 1) {
+					System.out.println("time set");
+					if (fired == false) {
 						if (finalUsedint == 0) {
 							setTime(i, i2);
 							sortTimes(1);
@@ -121,8 +120,10 @@ public class TuesdayFragment extends Fragment implements View.OnClickListener,On
 							setTime(i, i2);
 							sortTimes(2);
 						}
+					}else {
+						fired=true;
 					}
-					callCount++;
+
 				}
 			};
 			TimePickerDialog picker = new TimePickerDialog(thisview.getContext(), gettime,

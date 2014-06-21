@@ -190,6 +190,7 @@
         <Button android:id="@+id/savebtn" android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Save"
+                style="@style/DAY"
                 android:textAlignment="center"
                 android:textColor="#FFFFFFFF"
                 android:textSize="28sp"

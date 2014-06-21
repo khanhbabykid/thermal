@@ -2,18 +2,17 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="fill_parent"
               android:background="@drawable/day_bg"
               android:gravity="center_vertical"
               android:orientation="vertical"
               android:tag="fragment_day"
               tools:context="com.group15.thermal.app.MainActivity$PlaceholderFragment">
     <RelativeLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
         >
         <LinearLayout android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_above="@+id/footer"
+                      android:layout_height="fill_parent"
                       android:orientation="horizontal"
             >
             <RelativeLayout
@@ -55,6 +54,7 @@
                               android:layout_toRightOf="@+id/seekBAR"
                               android:orientation="vertical"
 
+
                     >
                     <Button
                         android:id="@+id/buttonPlus"
@@ -84,149 +84,115 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="fill_parent"
-                              android:orientation="vertical"
-                    >
-
-                    <ImageView
-                        android:id="@+id/ivSwitchIcon"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/sun_switch_ico"
-                        android:tag="sun"/>
-
-                    <TextView
-                        android:id="@+id/tvCurrentTemperature"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_horizontal"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:text="00.0℃"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="50sp"/>
-                    <LinearLayout android:layout_width="fill_parent"
-                                  android:layout_height="wrap_content"
-                                  android:orientation="vertical">
-                        <Button
-                            android:id="@+id/btSetPermanently"
+                <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/tvModeNote"
-                            android:layout_weight="1"
-                            android:onClick="setPermanently"
-                            android:singleLine="true"
-                            android:text="Set&#10;Permanently"
-                            android:textSize="20sp"
-                            />
-
-                        <!--<Button-->
-                        <!--android:id="@+id/btVacationMode"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:onClick="enableVacationMode"-->
-                        <!--android:text=""-->
-                        <!--android:textSize="20sp"-->
-                        <!--/>-->
-                        <ToggleButton android:id="@+id/btnVacation"
-                                      android:layout_width="fill_parent"
+                            android:scrollbars="none">
+                    <LinearLayout android:layout_width="fill_parent"
+                                  android:layout_height="fill_parent"
+                                  android:orientation="vertical"
+                        >
+                        <LinearLayout android:layout_width="fill_parent"
                                       android:layout_height="fill_parent"
-                                      android:layout_weight="1"
-                                      android:checked="false"
-                                      android:singleLine="true"
-                                      android:text="Vacation Mode"
-                                      android:textOff="Vacation OFF"
-                                      android:textOn="Vacation ON"
-                                      android:textSize="20sp"/>
+                                      android:orientation="vertical"
+                            >
 
-                        <!--<Button-->
-                        <!--android:id="@+id/btSetTemporarily"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:onClick="setTemporarily"-->
-                        <!--android:text="Set&#10;Temporarily"-->
-                        <!--android:textSize="18sp"-->
-                        <!--/>-->
+                            <ImageView
+                                android:id="@+id/ivSwitchIcon"
+                                android:layout_width="fill_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/sun_switch_ico"
+                                android:tag="sun"/>
+
+                            <TextView
+                                android:id="@+id/tvCurrentTemperature"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center_horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="00.0℃"
+                                android:textStyle="bold"
+                                android:typeface="sans"
+                                android:textAlignment="center"
+                                android:textColor="@android:color/white"
+                                android:textSize="50sp"/>
+                            <LinearLayout android:layout_width="fill_parent"
+                                          android:layout_height="wrap_content"
+                                          android:orientation="vertical"
+                                          android:layout_margin="10dp"
+                                >
+                                <Button
+                                    android:id="@+id/btSetPermanently"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/botbtn"
+                                    android:singleLine="true"
+                                    android:text="Set&#10;Permanently"
+                                    android:textSize="20sp"
+                                    />
+                                <ToggleButton android:id="@+id/btnVacation"
+                                              android:layout_width="fill_parent"
+                                              android:layout_height="fill_parent"
+                                              android:layout_marginTop="5dp"
+                                              android:layout_weight="1"
+                                              android:background="@drawable/botbtn"
+                                              android:checked="false"
+                                              android:singleLine="true"
+                                              android:paddingRight="5dp"
+                                              android:textOff="Vacation OFF"
+                                              android:textOn="Vacation ON"
+                                              android:textSize="20sp"/>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/tvDay"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="right"
+                                android:text="Day Temperature"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp"/>
+                            <TextView
+                                android:id="@+id/tvdaytemp"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:text="00.0℃"
+                                android:textColor="@android:color/white"
+                                android:textSize="25sp"/>
+                            <TextView
+                                android:id="@+id/tvNight"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="right"
+                                android:text="Night Temperature"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp"/>
+                            <TextView
+                                android:id="@+id/tvnighttemp"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:text="00.0℃"
+                                android:textColor="@android:color/white"
+                                android:textSize="25sp"/>
+
+
+                        </LinearLayout>
                     </LinearLayout>
-                    <TextView
-                        android:id="@+id/tvDay"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="right"
-                        android:text="Day Temperature"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/tvdaytemp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:text="00.0℃"
-                        android:textColor="@android:color/white"
-                        android:textSize="25sp"/>
-                    <TextView
-                        android:id="@+id/tvNight"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="right"
-                        android:text="Night Temperature"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/tvnighttemp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:text="00.0℃"
-                        android:textColor="@android:color/white"
-                        android:textSize="25sp"/>
-
-
-                </LinearLayout>
+                </ScrollView>
             </RelativeLayout>
         </LinearLayout>
-        <!--<View-->
-        <!--android:id="@+id/blurcontent"-->
-        <!--android:layout_width="fill_parent" android:layout_height="fill_parent"></View>-->
-        <!--<LinearLayout-->
-        <!--android:id="@+id/footer"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:orientation="horizontal"-->
-        <!-->-->
-        <!--<Button style="@android:style/Widget.Holo.Button.Borderless"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="Today"-->
-        <!--android:textColor="#030101"/>-->
-        <!--<View android:layout_width="3dp" android:layout_height="match_parent"-->
-        <!--android:background="@drawable/back_white_divider"/>-->
-        <!--<Button style="@android:style/Widget.Holo.Button.Borderless"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:text="Help"-->
-        <!--android:textColor="#26130b"/>-->
-        <!--//...insert stuff here-->
-        <!--</LinearLayout>-->
     </RelativeLayout>
 </LinearLayout>

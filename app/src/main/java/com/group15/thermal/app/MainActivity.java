@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity {
 
 	public static double temperature = 0.0;
 	public static String mode = "day";
-	public static int interval = 500;
+	public static int interval = 1000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
 		String curTemp = "10.1", dayTemp, nightTemp, weekState;
 		SeekBar seekBar;
 		View thisview = null;
-		int stopupdate = 4;
+		int stopupdate = 2;
 
 		Handler timeHandler;
 		private TimerTask mTimerTask;
@@ -240,12 +240,12 @@ public class MainActivity extends ActionBarActivity {
 					switch (motionEvent.getAction()) {
 						case MotionEvent.ACTION_DOWN:
 							System.out.println("down");
-							stopupdate = 0;
+							stopupdate = 3;
 							return true;
 						case MotionEvent.ACTION_UP:
 							System.out.println("up");
 							putTemp();
-							stopupdate = 3;
+							stopupdate = 2;
 							return true;
 					}
 					return false;
@@ -341,42 +341,22 @@ public class MainActivity extends ActionBarActivity {
 
 			System.out.println(sunmoon.getTag());
 			System.out.println(mode);
-			stopupdate = 1;
+			stopupdate = 0;
 			if (a == 0) {
 				if (mode.equals("day")) {
 					mode = "night";
 					temperature = Double.parseDouble(nightTemp);
 					putTemp();
+					thisview.setBackgroundResource(R.drawable.night_bg);
+					sunmoon.setImageResource(R.drawable.moon_switch_ico);
 				} else if (mode.equals("night")) {
 					mode = "day";
 					temperature = Double.parseDouble(dayTemp);
 					putTemp();
+					thisview.setBackgroundResource(R.drawable.day_bg);
+					sunmoon.setImageResource(R.drawable.sun_switch_ico);
 				}
 			}
-//			if (mode.equals("day")) {
-//				if (a == 0 || a == 1 && sunmoon.getTag().equals("sun")) {
-//					mode = "night";
-//					sunmoon.setImageResource(R.drawable.moon_switch_ico);
-//					if(v!=null)
-//						v.setBackgroundResource(R.drawable.night_bg);
-//				}
-//			} else {
-//				if (a == 0 || a == 2 && !sunmoon.getTag().equals("sun")) {
-//					mode = "day";
-//					sunmoon.setImageResource(R.drawable.sun_switch_ico);
-//					if(v!=null)
-//						v.setBackgroundResource(R.drawable.day_bg);
-//				}
-//			}
-//			if(a==0){
-//				if(mode.equals("day")){
-//					temperature= Double.parseDouble(dayTemp);
-//					putTemp();
-//				}else if(mode.equals("night")){
-//					temperature= Double.parseDouble(nightTemp);
-//					putTemp();
-//				}
-//			}
 		}
 
 		public void changeTemperature(int a) {
@@ -430,7 +410,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			protected void onPostExecute(String s) {
 
-				if (stopupdate == 4) {
+				if (stopupdate == 2) {
 
 					//Update TEMP
 					currentTemp.setText(curTemp + "\u2103");
@@ -461,20 +441,7 @@ public class MainActivity extends ActionBarActivity {
 							mode = "night";
 						}
 
-//						if (!Double.toString(temperature).equals(nightTemp) && curTemp.equals(nightTemp)) {
-//						if(curTemp.equals(nightTemp)){
-//							changemode(1);
-//						}
-
 					} else if (mode.equals("night")) {
-//						if (curTemp.equals(dayTemp)) {
-//							changemode(2);
-//						}
-//						if (!Double.toString(temperature).equals(nightTemp)) {
-//							setPermanent.setEnabled(true);
-//						} else {
-//							setPermanent.setEnabled(false);
-//						}
 						if (!Double.toString(temperature).equals(nightTemp)) {
 							setPermanent.setEnabled(true);
 						} else {
@@ -489,7 +456,11 @@ public class MainActivity extends ActionBarActivity {
 							mode = "day";
 						}
 					}
-				} else if (stopupdate == 1) {
+				}
+//				} else if (stopupdate == 1) {
+//					stopupdate=2;
+//				}
+				else{
 					stopupdate++;
 				}
 				super.onPostExecute(s);
