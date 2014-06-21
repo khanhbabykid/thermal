@@ -1,5 +1,6 @@
 package com.group15.thermal.app;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.group15.thermal.webservice.Heating;
@@ -26,30 +28,58 @@ import java.util.TimerTask;
 
 public class MainActivity extends ActionBarActivity {
 
-	public static double temperature;
-
-
-
-
+	public static double temperature = 0.0;
+	public static String mode = "day";
+	public static int interval = 500;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		temperature = 5.0;
 		setContentView(R.layout.status_activity);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container1, new PlaceholderFragment())
 					.commit();
 		}
+		try {
+			GetThisWeekProgram();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
+	public void GetThisWeekProgram() throws InterruptedException {
+
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+
+				if (Heating.startservice()) {
+					showToast("Connected!", 1);
+				} else
+					showToast("Unable to connect to web service!", 1);
+			}
+		});
+		t.start();
+		t.join();
+	}
+
+	public void showToast(final String toast, final Integer length) {
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				/* TODO Auto-generated method stub */
+				Toast.makeText(MainActivity.this, toast, length == 1 ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
+
+			}
+		});
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_weeklist, menu);
 		MenuItem b = menu.findItem(R.id.weekbtn);
 		b.setTitle(changebtn);
@@ -61,9 +91,7 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+
 		int id = item.getItemId();
 		switch (id) {
 			case R.id.weekbtn:
@@ -71,15 +99,14 @@ public class MainActivity extends ActionBarActivity {
 					WeekActivity weekActivity = new WeekActivity();
 					FragmentTransaction a = getSupportFragmentManager().beginTransaction();
 					a.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-					a.add(R.id.container1, weekActivity);
+					a.replace(R.id.container1, weekActivity, "list_weekprogram");
+					a.addToBackStack("fragment_day");
 					a.commit();
 					changebtn = "Today";
 					change = true;
 					invalidateOptionsMenu();
 				} else {
-					getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
-							.add(R.id.container1, new PlaceholderFragment())
-							.commit();
+					getSupportFragmentManager().popBackStack();
 					item.setTitle("Week Program");
 					change = false;
 					changebtn = "Week Program";
@@ -104,15 +131,15 @@ public class MainActivity extends ActionBarActivity {
 		ToggleButton vacationMode;
 		TextView currentTemp, daytext, daytemp, nighttext, nighttemp;
 		ImageView sunmoon;
-		String curTemp = "0.0", dayTemp, nightTemp, weekState;
+		String curTemp = "10.1", dayTemp, nightTemp, weekState;
 		SeekBar seekBar;
-		String mode  = "day";
-		View thisview= null;
-		Boolean stopupdate = true;
+		View thisview = null;
+		int stopupdate = 4;
 
 		Handler timeHandler;
-		private TimerTask mTimerTask, anothertask;
-		private Timer timer = new Timer();
+		private TimerTask mTimerTask;
+		private Timer timer = null;
+
 
 		@Override
 		public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -121,6 +148,7 @@ public class MainActivity extends ActionBarActivity {
 			Thread a = new Thread(new Runnable() {
 				@Override
 				public void run() {
+
 					try {
 						dayTemp = Heating.get(Heating.DAY_TEMP);
 						nightTemp = Heating.get(Heating.NIGHT_TEMP);
@@ -139,8 +167,9 @@ public class MainActivity extends ActionBarActivity {
 			seekBar.setProgress((int) (Double.parseDouble(curTemp) * 10));
 			VerticalSeekBar s = (VerticalSeekBar) getActivity().findViewById(R.id.seekBar1);
 			s.onSizeChanged(s.getWidth(), s.getHeight(), 0, 0);
-			dotimertask();
-			thisview=view;
+//			timer = new Timer();
+//			timeHandler = new Handler();
+//			dotimertask();
 
 		}
 
@@ -148,8 +177,10 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		                         Bundle savedInstanceState) {
-			setRetainInstance(true);
+
 			View rootView = inflater.inflate(R.layout.fragment_day, container, false);
+			thisview = rootView;
+
 			seekBar = (SeekBar) rootView.findViewById(R.id.seekBar1);
 
 			vacationMode = (ToggleButton) rootView.findViewById(R.id.btnVacation);
@@ -170,8 +201,8 @@ public class MainActivity extends ActionBarActivity {
 			nighttext = (TextView) rootView.findViewById(R.id.tvNight);
 			nighttemp = (TextView) rootView.findViewById(R.id.tvnighttemp);
 
-			sunmoon = (ImageView)rootView.findViewById(R.id.ivSwitchIcon);
-				sunmoon.setOnClickListener(this);
+			sunmoon = (ImageView) rootView.findViewById(R.id.ivSwitchIcon);
+			sunmoon.setOnClickListener(this);
 
 
 			seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -186,6 +217,7 @@ public class MainActivity extends ActionBarActivity {
 				public void onStopTrackingTouch(SeekBar seekBar) {
 
 				}
+
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress,
 				                              boolean fromUser) {
@@ -195,8 +227,9 @@ public class MainActivity extends ActionBarActivity {
 					} else {
 						double d = (double) progress;
 						d = (d / 10);
+						System.out.println("...");
 						temperature = d;
-						currentTemp.setText(temperature + "\u2103");
+						currentTemp.setText(d + "\u2103");
 					}
 				}
 			});
@@ -207,23 +240,40 @@ public class MainActivity extends ActionBarActivity {
 					switch (motionEvent.getAction()) {
 						case MotionEvent.ACTION_DOWN:
 							System.out.println("down");
-							stoptask();
-							stopupdate=false;
+							stopupdate = 0;
 							return true;
 						case MotionEvent.ACTION_UP:
 							System.out.println("up");
 							putTemp();
-							dotimertask();
-							stopupdate=true;
+							stopupdate = 3;
 							return true;
 					}
 					return false;
 				}
 			});
 
+			return rootView;
+		}
+
+		@Override
+		public void onStop() {
+
+			System.out.println("Stop");
+			if (timer != null) {
+				timer.cancel();
+				timer = null;
+			}
+			super.onStop();
+		}
+
+		@Override
+		public void onResume() {
+
+			System.out.println("resumed");
+			timer = new Timer();
 			timeHandler = new Handler();
 			dotimertask();
-			return rootView;
+			super.onResume();
 		}
 
 		@Override
@@ -258,33 +308,26 @@ public class MainActivity extends ActionBarActivity {
 							}
 						}).start();
 					}
+					vacationMode.setChecked(!vacationMode.isChecked());
 					break;
 				case R.id.buttonPlus:
 					changeTemperature(0);
+					stopupdate = 1;
 					break;
 				case R.id.buttonMinus:
 					changeTemperature(1);
+					stopupdate = 1;
 					break;
 				case R.id.ivSwitchIcon:
-					View v = getView().findViewById(R.id.main_fragment);
-					if(mode.equals("day")){
-						mode="night";
-						sunmoon.setImageResource(R.drawable.moon_switch_ico);
-						v.setBackgroundResource(R.drawable.night_bg);
-
-					}else{
-						mode = "day";
-						sunmoon.setImageResource(R.drawable.sun_switch_ico);
-						v.setBackgroundResource(R.drawable.day_bg);
-
-					}
+					changemode(0);
 					break;
 				case R.id.btSetPermanently:
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
+
 							try {
-								Heating.put(mode.equals("day")?Heating.DAY_TEMP:Heating.NIGHT_TEMP,Double.toString(temperature));
+								Heating.put(mode.equals("day") ? Heating.DAY_TEMP : Heating.NIGHT_TEMP, Double.toString(temperature));
 							} catch (InvalidInputValueException e) {
 								e.printStackTrace();
 							}
@@ -294,7 +337,50 @@ public class MainActivity extends ActionBarActivity {
 			}
 		}
 
+		private void changemode(int a) {
+
+			System.out.println(sunmoon.getTag());
+			System.out.println(mode);
+			stopupdate = 1;
+			if (a == 0) {
+				if (mode.equals("day")) {
+					mode = "night";
+					temperature = Double.parseDouble(nightTemp);
+					putTemp();
+				} else if (mode.equals("night")) {
+					mode = "day";
+					temperature = Double.parseDouble(dayTemp);
+					putTemp();
+				}
+			}
+//			if (mode.equals("day")) {
+//				if (a == 0 || a == 1 && sunmoon.getTag().equals("sun")) {
+//					mode = "night";
+//					sunmoon.setImageResource(R.drawable.moon_switch_ico);
+//					if(v!=null)
+//						v.setBackgroundResource(R.drawable.night_bg);
+//				}
+//			} else {
+//				if (a == 0 || a == 2 && !sunmoon.getTag().equals("sun")) {
+//					mode = "day";
+//					sunmoon.setImageResource(R.drawable.sun_switch_ico);
+//					if(v!=null)
+//						v.setBackgroundResource(R.drawable.day_bg);
+//				}
+//			}
+//			if(a==0){
+//				if(mode.equals("day")){
+//					temperature= Double.parseDouble(dayTemp);
+//					putTemp();
+//				}else if(mode.equals("night")){
+//					temperature= Double.parseDouble(nightTemp);
+//					putTemp();
+//				}
+//			}
+		}
+
 		public void changeTemperature(int a) {
+
 			if (a == 1) {
 				temperature -= 0.1;
 			} else {
@@ -321,24 +407,8 @@ public class MainActivity extends ActionBarActivity {
 			}).start();
 		}
 
-		public void stoptask() {
-
-			if (mTimerTask != null) {
-				mTimerTask.cancel();
-				mTimerTask = null;
-				System.out.println("mtimertask cancelled");
-			}
-			if (anothertask != null) {
-				anothertask.cancel();
-				anothertask=null;
-				System.out.println("anothertask cancelled");
-			}
-		}
-
 		public void dotimertask() {
-			if(anothertask==null){
-				System.out.println("oh yeah");
-			}
+
 			mTimerTask = new TimerTask() {
 				//this method is called every 1ms
 				public void run() {
@@ -346,75 +416,99 @@ public class MainActivity extends ActionBarActivity {
 					timeHandler.post(new Runnable() {
 						public void run() {
 
-							Thread a = new Thread(new Runnable() {
-								@Override
-								public void run() {
-
-									try {
-										curTemp = Heating.get(Heating.CURRENT_TEMP);
-										dayTemp = Heating.get(Heating.DAY_TEMP);
-										nightTemp = Heating.get(Heating.NIGHT_TEMP);
-										weekState = Heating.get(Heating.WEEK_STATE);
-									} catch (ConnectException e) {
-										e.printStackTrace();
-									}
-								}
-							});
-							a.start();
-							try {
-								a.join();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+							AsyncTaskRunner abc = new AsyncTaskRunner();
+							abc.execute();
 						}
 					});
 				}
 			};
-			anothertask = new TimerTask() {
-				@Override
-				public void run() {
-
-					timeHandler.post(new Runnable() {
-						@Override
-						public void run() {
-
-							getActivity().runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									if(stopupdate) {
-										currentTemp.setText(curTemp + "\u2103");
-
-										daytemp.setText(dayTemp + "\u2103");
-										nighttemp.setText(nightTemp + "\u2103");
-										if (weekState.equals("off")) {
-											vacationMode.setChecked(true);
-										} else {
-											vacationMode.setChecked(false);
-										}
-										if (mode.equals("day")) {
-
-											if (!curTemp.equals(dayTemp)) {
-												setPermanent.setEnabled(true);
-											} else {
-												setPermanent.setEnabled(false);
-											}
-										} else if (mode.equals("night")) {
-											if (!Double.toString(temperature).equals(nightTemp)) {
-												setPermanent.setEnabled(true);
-											} else {
-												setPermanent.setEnabled(false);
-											}
-										}
-									}
-								}
-							});
-						}
-					});
-				}
-			};
-			timer.schedule(mTimerTask, 1000, 1000);
-			timer.schedule(anothertask, 1000, 1200);
+			timer.schedule(mTimerTask, 0, interval);
 		}
 
+		private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+			@Override
+			protected void onPostExecute(String s) {
+
+				if (stopupdate == 4) {
+
+					//Update TEMP
+					currentTemp.setText(curTemp + "\u2103");
+					daytemp.setText(dayTemp + "\u2103");
+					nighttemp.setText(nightTemp + "\u2103");
+
+					//check Week State
+					if (weekState.equals("off")) {
+						vacationMode.setChecked(true);
+					} else {
+						vacationMode.setChecked(false);
+					}
+
+					//Check mode and set button
+					if (mode.equals("day")) {
+						//check SET button
+						if (!Double.toString(temperature).equals(dayTemp)) {
+							setPermanent.setEnabled(true);
+						} else {
+							setPermanent.setEnabled(false);
+						}
+						if (!sunmoon.getTag().equals("sun")) {
+							sunmoon.setImageResource(R.drawable.sun_switch_ico);
+							thisview.setBackgroundResource(R.drawable.day_bg);
+							sunmoon.setTag("sun");
+						}
+						if (curTemp.equals(nightTemp)) {
+							mode = "night";
+						}
+
+//						if (!Double.toString(temperature).equals(nightTemp) && curTemp.equals(nightTemp)) {
+//						if(curTemp.equals(nightTemp)){
+//							changemode(1);
+//						}
+
+					} else if (mode.equals("night")) {
+//						if (curTemp.equals(dayTemp)) {
+//							changemode(2);
+//						}
+//						if (!Double.toString(temperature).equals(nightTemp)) {
+//							setPermanent.setEnabled(true);
+//						} else {
+//							setPermanent.setEnabled(false);
+//						}
+						if (!Double.toString(temperature).equals(nightTemp)) {
+							setPermanent.setEnabled(true);
+						} else {
+							setPermanent.setEnabled(false);
+						}
+						if (!sunmoon.getTag().equals("moon")) {
+							sunmoon.setImageResource(R.drawable.moon_switch_ico);
+							thisview.setBackgroundResource(R.drawable.night_bg);
+							sunmoon.setTag("moon");
+						}
+						if (curTemp.equals(dayTemp)) {
+							mode = "day";
+						}
+					}
+				} else if (stopupdate == 1) {
+					stopupdate++;
+				}
+				super.onPostExecute(s);
+			}
+
+			@Override
+			protected String doInBackground(String... strings) {
+
+				try {
+					curTemp = Heating.get(Heating.CURRENT_TEMP);
+					dayTemp = Heating.get(Heating.DAY_TEMP);
+					nightTemp = Heating.get(Heating.NIGHT_TEMP);
+					weekState = Heating.get(Heating.WEEK_STATE);
+				} catch (ConnectException e) {
+					e.printStackTrace();
+				}
+
+				return null;
+			}
+		}
 	}
 }

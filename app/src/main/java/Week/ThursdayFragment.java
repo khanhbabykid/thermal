@@ -9,13 +9,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.group15.thermal.app.WeekDetails;
 import com.group15.thermal.app.OnRefreshListener;
 import com.group15.thermal.app.R;
+import com.group15.thermal.webservice.Heating;
 import com.group15.thermal.webservice.Switch;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ThursdayFragment extends Fragment implements View.OnClickListener,OnRefreshListener {
 
@@ -47,71 +50,179 @@ public class ThursdayFragment extends Fragment implements View.OnClickListener,O
 	}
 
 
-	private void UpdateDisplay(){
-		for(Switch swbtn : WeekDetails.weekProgram.getDaySwitches(title)){
-			if(swbtn.getType().equalsIgnoreCase("day")){
+
+	private void UpdateDisplay() {
+		System.out.println("Updated");
+		for (Switch swbtn : WeekDetails.weekProgram.getDaySwitches(title)) {
+			if (swbtn.getType().equalsIgnoreCase("day")) {
 				night2day.add(swbtn.getTime());
-			}else{
+			} else {
 				day2night.add(swbtn.getTime());
 			}
 		}
 		savebtn.setVisibility(View.INVISIBLE);
-		for (int i=0; i<5;i++){
-			Button z = (Button)this.thisview.findViewById(buttons[i + 5]);
-			Button y = (Button)thisview.findViewById(buttons[i]);
+		for (int i = 0; i < 5; i++) {
+			Button z = (Button) this.thisview.findViewById(buttons[i + 5]);
+			Button y = (Button) thisview.findViewById(buttons[i]);
 			z.setText(night2day.get(i));
 			y.setText(day2night.get(i));
 			z.setOnClickListener(this);
 			y.setOnClickListener(this);
 		}
+		night2day.clear();
+		day2night.clear();
 	}
 
 	@Override
 	public void onRefresh() {
-		if(WeekDetails.currentFragment==1){
-			//Toast.makeText(getActivity(), "Monday Created!", Toast.LENGTH_SHORT).show();
-		}
-		while(this.isAdded()==false) {
-			try {
-				wait(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 		UpdateDisplay();
-		System.out.println("Updated");
+
 
 	}
 
 	@Override
 	public void onClick(View view) {
 
-		if(view.getId()==R.id.savebtn){
-
+		int UsedButton;
+		if (view.getId() == R.id.savebtn) {
+			putWeekProgram();
+			showToast(2);
 			savebtn.setVisibility(View.INVISIBLE);
-		}else {
-			for (Integer button : buttons) {
-				if (button.equals(view.getId())) {
-					usedbutton = (Button) this.thisview.findViewById(button);
+		} else {
+			UsedButton = -1;
+			for (int i = 0; i < 10; i++) {
+				if (view.getId() == buttons[i]) {
+					usedbutton = (Button) thisview.findViewById(buttons[i]);
+					UsedButton = i;
 					break;
 				}
 			}
+			//Get and check time!!!
+			final int finalUsedint = UsedButton;
 			TimePickerDialog.OnTimeSetListener gettime;
 			gettime = new TimePickerDialog.OnTimeSetListener() {
+				int callCount = 0;
+
 				@Override
 				public void onTimeSet(TimePicker timePicker, int i, int i2) {
 
-					String time;
-					time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
-					time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
-					usedbutton.setText(time);
-					savebtn.setVisibility(View.VISIBLE);
+					if (callCount == 1) {
+						if (finalUsedint == 0) {
+							setTime(i, i2);
+							sortTimes(1);
+						} else if (finalUsedint >= 1 && finalUsedint <= 4) {
+							setTime(i, i2);
+							sortTimes(1);
+						} else if (finalUsedint >= 5 && finalUsedint <= 9) {
+							setTime(i, i2);
+							sortTimes(2);
+						}
+					}
+					callCount++;
 				}
 			};
-			TimePickerDialog picker = new TimePickerDialog(getActivity(), gettime,
+			TimePickerDialog picker = new TimePickerDialog(thisview.getContext(), gettime,
 					new Integer(usedbutton.getText().toString().split(":")[0]),
 					new Integer(usedbutton.getText().toString().split(":")[1]), true);
 			picker.show();
 		}
+	}
+
+	private void sortTimes(int type) {
+
+		if (type == 1) {
+			System.out.println("Sorted??");
+			ArrayList<Integer> allTime = new ArrayList<Integer>(0);
+			for (int j = 0; j < 5; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int eleTime = Integer.parseInt(c.getText().toString().split(":")[0] +
+						c.getText().toString().split(":")[1]);
+				allTime.add(eleTime);
+			}
+			Collections.sort(allTime);
+			for (int j = 0; j < 5; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int i = (allTime.get(j) / 100);
+				int i2 = (allTime.get(j) % 100);
+				String time;
+				time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+				time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+				c.setText(time);
+
+			}
+			System.out.println("Sorted!!");
+		} else if (type == 2) {
+			ArrayList<Integer> allTime = new ArrayList<Integer>(0);
+			for (int j = 5; j < 10; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int eleTime = Integer.parseInt(c.getText().toString().split(":")[0] +
+						c.getText().toString().split(":")[1]);
+				allTime.add(eleTime);
+			}
+			Collections.sort(allTime);
+			for (int j = 5; j < 10; j++) {
+				Button c = (Button) thisview.findViewById(buttons[j]);
+				int i = (allTime.get(j - 5) / 100);
+				int i2 = (allTime.get(j - 5) % 100);
+				String time;
+				time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+				time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+				c.setText(time);
+			}
+		}
+	}
+
+	private void setTime(int i, int i2) {
+
+		String time;
+		time = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+		time = time + ":" + (i2 < 10 ? "0" + Integer.toString(i2) : Integer.toString(i2));
+		String oldtime = usedbutton.getText().toString();
+		usedbutton.setText(time);
+		if (!oldtime.equals(time))
+			savebtn.setVisibility(View.VISIBLE);
+	}
+
+	private void showToast(int status) {
+
+		String text = "";
+		switch (status) {
+			case 0:
+				text = "Can't set value";
+				break;
+			case 1:
+				text = "Set previous button first!";
+				break;
+			case 2:
+				text = "Updated";
+				break;
+		}
+		Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+	}
+
+
+
+	private boolean putWeekProgram() {
+
+		ArrayList<Switch> newSwitches = new ArrayList<Switch>();
+		for (int i = 0; i < 5; i++) {
+			Button tempbtn1 = (Button) thisview.findViewById(buttons[i]);
+			Button tempbtn2 = (Button) thisview.findViewById(buttons[i + 5]);
+			newSwitches.add(new Switch("night", true, tempbtn1.getText().toString()));
+			newSwitches.add(new Switch("day", true, tempbtn2.getText().toString()));
+		}
+		WeekDetails.weekProgram.setDaySwitches(title, newSwitches);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Heating.setWeekProgram(WeekDetails.weekProgram);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
+		return false;
 	}
 }

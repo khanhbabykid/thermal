@@ -26,7 +26,7 @@ public class Heating {
 	public static String WEEK_PROGRAM_ADDRESS = "http://thermalstatws.herokuapp.com/015/weekProgram";
 	private final static int TIME_OUT = 10000; // in milliseconds.
 	
-	//*******************
+
 	//Get WeekProgram
 	/**
 	 * Retrieving weekProgram
@@ -360,9 +360,7 @@ public class Heating {
 			out.flush();
 
 			String response = connect.getResponseMessage();
-			int responseCode = connect.getResponseCode();
 			System.out.println("Http Response: " + response);
-			System.out.println("Http Response Code: " + responseCode);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (UnknownHostException e) {

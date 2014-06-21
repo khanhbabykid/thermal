@@ -56,9 +56,7 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 
 
 	private void UpdateDisplay() {
-
-		ArrayList<Switch> swbtns = null;
-		swbtns = WeekDetails.weekProgram.getDaySwitches(title);
+		System.out.println("Updated");
 		for (Switch swbtn : WeekDetails.weekProgram.getDaySwitches(title)) {
 			if (swbtn.getType().equalsIgnoreCase("day")) {
 				night2day.add(swbtn.getTime());
@@ -75,29 +73,24 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 			z.setOnClickListener(this);
 			y.setOnClickListener(this);
 		}
-
+		night2day.clear();
+		day2night.clear();
 	}
 
 	@Override
 	public void onRefresh() {
-
-		if (WeekDetails.currentFragment == 1) {
-			//Toast.makeText(getActivity(), "Monday Created!", Toast.LENGTH_SHORT).show();
-		}
 		UpdateDisplay();
-		System.out.println("Updated");
+
 
 	}
 
 	@Override
 	public void onClick(View view) {
 
-		int UsedButton = 0;
+		int UsedButton;
 		if (view.getId() == R.id.savebtn) {
 			putWeekProgram();
 			showToast(2);
-			//final WeekProgram putwkpr = new WeekProgram();
-
 			savebtn.setVisibility(View.INVISIBLE);
 		} else {
 			UsedButton = -1;
@@ -107,7 +100,6 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 					UsedButton = i;
 					break;
 				}
-
 			}
 			//Get and check time!!!
 			final int finalUsedint = UsedButton;
@@ -206,10 +198,36 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 				text = "Set previous button first!";
 				break;
 			case 2:
-				text = "Updated new week program";
+				text = "Updated";
 				break;
 		}
 		Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+	}
+
+
+
+	private boolean putWeekProgram() {
+
+		ArrayList<Switch> newSwitches = new ArrayList<Switch>();
+		for (int i = 0; i < 5; i++) {
+			Button tempbtn1 = (Button) thisview.findViewById(buttons[i]);
+			Button tempbtn2 = (Button) thisview.findViewById(buttons[i + 5]);
+			newSwitches.add(new Switch("night", true, tempbtn1.getText().toString()));
+			newSwitches.add(new Switch("day", true, tempbtn2.getText().toString()));
+		}
+		WeekDetails.weekProgram.setDaySwitches(title, newSwitches);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Heating.setWeekProgram(WeekDetails.weekProgram);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
+		return false;
 	}
 
 	private void checkDuplicates(int type) {
@@ -226,29 +244,4 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 		}
 	}
 
-	private boolean putWeekProgram() {
-
-		ArrayList<Switch> newSwitches = new ArrayList<Switch>();
-		for (int i = 0; i < 5; i++) {
-			Button tempbtn1 = (Button) thisview.findViewById(buttons[i]);
-			Button tempbtn2 = (Button) thisview.findViewById(buttons[i + 5]);
-			newSwitches.add(new Switch("night", true, tempbtn1.getText().toString()));
-			newSwitches.add(new Switch("day", true, tempbtn2.getText().toString()));
-		}
-		WeekDetails.weekProgram.setDaySwitches(title, newSwitches);
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-
-				try {
-					Heating.setWeekProgram(WeekDetails.weekProgram);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
-
-		return false;
-	}
 }
-

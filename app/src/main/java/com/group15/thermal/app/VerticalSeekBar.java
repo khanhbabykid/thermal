@@ -8,52 +8,59 @@ import android.widget.SeekBar;
 
 public class VerticalSeekBar extends SeekBar {
 
-    public VerticalSeekBar(Context context) {
-        super(context);
-    }
+	public VerticalSeekBar(Context context) {
 
-    public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+		super(context);
+	}
 
-    public VerticalSeekBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
 
-    public void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(h, w, oldh, oldw);
-    }
+		super(context, attrs, defStyle);
+	}
 
-    @Override
-    protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(heightMeasureSpec, widthMeasureSpec);
-        setMeasuredDimension(getMeasuredHeight(), getMeasuredWidth());
-    }
+	public VerticalSeekBar(Context context, AttributeSet attrs) {
 
-    protected void onDraw(Canvas c) {
-        c.rotate(-90);
-        c.translate(-getHeight(), 0);
+		super(context, attrs);
+	}
 
-        super.onDraw(c);
-    }
+	public void onSizeChanged(int w, int h, int oldw, int oldh) {
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!isEnabled()) {
-            return false;
-        }
+		super.onSizeChanged(h, w, oldh, oldw);
+	}
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_MOVE:
-            case MotionEvent.ACTION_UP:
-                setProgress(getMax() - (int) (getMax() * event.getY() / getHeight()));
-                onSizeChanged(getWidth(), getHeight(), 0, 0);
-                break;
+	@Override
+	protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-            case MotionEvent.ACTION_CANCEL:
-                break;
-        }
-        return true;
-    }
+		super.onMeasure(heightMeasureSpec, widthMeasureSpec);
+		setMeasuredDimension(getMeasuredHeight(), getMeasuredWidth());
+	}
+
+	protected void onDraw(Canvas c) {
+
+		c.rotate(-90);
+		c.translate(-getHeight(), 0);
+
+		super.onDraw(c);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+
+		if (!isEnabled()) {
+			return false;
+		}
+
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_MOVE:
+			case MotionEvent.ACTION_UP:
+				setProgress(getMax() - (int) (getMax() * event.getY() / getHeight()));
+				onSizeChanged(getWidth(), getHeight(), 0, 0);
+				break;
+
+			case MotionEvent.ACTION_CANCEL:
+				break;
+		}
+		return true;
+	}
 }

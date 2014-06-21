@@ -4,9 +4,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@drawable/day_bg"
-
               android:gravity="center_vertical"
               android:orientation="vertical"
+              android:tag="fragment_day"
               tools:context="com.group15.thermal.app.MainActivity$PlaceholderFragment">
     <RelativeLayout android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,18 +65,18 @@
                         android:padding="4dp"
                         android:singleLine="true"
                         android:text="+ 0.1"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
+                        android:textSize="23sp"
+                        />
                     <Button
                         android:id="@+id/buttonMinus"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/botbtn"
-                        android:padding="6dp"
+                        android:padding="4dp"
                         android:singleLine="true"
-                        android:text="- 0.1"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
+                        android:text="-  0.1"
+                        android:textSize="23sp"
+                        />
 
 
                 </LinearLayout>
@@ -87,46 +87,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp"
-                android:paddingLeft="10dp"
                 android:layout_weight="1"
                 android:gravity="right"
+                android:paddingLeft="10dp"
                 android:paddingRight="10dp">
                 <LinearLayout android:layout_width="fill_parent"
                               android:layout_height="fill_parent"
                               android:orientation="vertical"
-
                     >
 
-                    <!--<ToggleButton-->
-                    <!--android:id="@+id/mode"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:background="@drawable/dntoggle"-->
-                    <!--android:button="@null"-->
-                    <!--android:checked="true"-->
-                    <!--android:textOff=""-->
-                    <!--android:textOn=""/>-->
                     <ImageView
                         android:id="@+id/ivSwitchIcon"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/sun_switch_ico"/>
+                        android:src="@drawable/sun_switch_ico"
+                        android:tag="sun"/>
 
                     <TextView
                         android:id="@+id/tvCurrentTemperature"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
                         android:text="00.0℃"
+                        android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="50sp"/>
                     <LinearLayout android:layout_width="fill_parent"
@@ -138,47 +126,47 @@
                             android:layout_height="fill_parent"
                             android:layout_alignParentRight="true"
                             android:layout_below="@+id/tvModeNote"
+                            android:layout_weight="1"
                             android:onClick="setPermanently"
+                            android:singleLine="true"
                             android:text="Set&#10;Permanently"
                             android:textSize="20sp"
-                            android:singleLine="true"
-                            android:layout_weight="1"
                             />
 
                         <!--<Button-->
-                            <!--android:id="@+id/btVacationMode"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:onClick="enableVacationMode"-->
-                            <!--android:text=""-->
-                            <!--android:textSize="20sp"-->
-                            <!--/>-->
-                        <ToggleButton android:layout_width="fill_parent"
+                        <!--android:id="@+id/btVacationMode"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:onClick="enableVacationMode"-->
+                        <!--android:text=""-->
+                        <!--android:textSize="20sp"-->
+                        <!--/>-->
+                        <ToggleButton android:id="@+id/btnVacation"
+                                      android:layout_width="fill_parent"
                                       android:layout_height="fill_parent"
-                            android:text="Vacation Mode"
-                            android:id="@+id/btnVacation"
-                            android:textOn="Vacation ON"
-                            android:textOff="Vacation OFF"
-                            android:textSize="20sp"
-                            android:layout_weight="1"
-                            android:singleLine="true"
-                            android:checked="false"/>
+                                      android:layout_weight="1"
+                                      android:checked="false"
+                                      android:singleLine="true"
+                                      android:text="Vacation Mode"
+                                      android:textOff="Vacation OFF"
+                                      android:textOn="Vacation ON"
+                                      android:textSize="20sp"/>
 
                         <!--<Button-->
-                            <!--android:id="@+id/btSetTemporarily"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:onClick="setTemporarily"-->
-                            <!--android:text="Set&#10;Temporarily"-->
-                            <!--android:textSize="18sp"-->
-                            <!--/>-->
+                        <!--android:id="@+id/btSetTemporarily"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:onClick="setTemporarily"-->
+                        <!--android:text="Set&#10;Temporarily"-->
+                        <!--android:textSize="18sp"-->
+                        <!--/>-->
                     </LinearLayout>
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tvDay"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:gravity="right"
                         android:text="Day Temperature"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
@@ -186,24 +174,24 @@
                         android:id="@+id/tvdaytemp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="00.0℃"
                         android:gravity="right"
+                        android:text="00.0℃"
                         android:textColor="@android:color/white"
                         android:textSize="25sp"/>
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tvNight"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:gravity="right"
                         android:text="Night Temperature"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"/>
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tvnighttemp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:text="00.0℃"
                         android:textColor="@android:color/white"
                         android:textSize="25sp"/>

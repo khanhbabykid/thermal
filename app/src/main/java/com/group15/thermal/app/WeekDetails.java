@@ -96,9 +96,6 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 							.setText(mSectionsPagerAdapter.getPageTitle(i))
 							.setTabListener(this)
 			);
-//		    getSupportFragmentManager().beginTransaction().add(mSectionsPagerAdapter
-//			        .getItem(i), Integer.toString(i)).commit();
-
 		}
 		try {
 			GetThisWeekProgram();
@@ -123,6 +120,7 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 					try {
 						WeekProgram wp = Heating.getWeekProgram();
 						weekProgram = wp;
+						System.out.println("got it!");
 						if (wp.get_nr_switches_active(1) != 10) {
 							wp.setDefault();
 							Heating.setWeekProgram(wp);
@@ -169,7 +167,6 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 		if (id == R.id.action_settings) {
 			try {
 				GetThisWeekProgram();
-
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
