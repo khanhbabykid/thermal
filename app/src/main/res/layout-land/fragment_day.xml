@@ -20,18 +20,18 @@
                 android:layout_height="fill_parent"
                 android:layout_marginBottom="40dp"
                 android:layout_marginTop="30dp"
-                android:layout_weight="1.2"
+                android:layout_weight="1.6"
                 android:gravity="center_horizontal"
 
                 >
                 <RelativeLayout android:id="@+id/seekBAR"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="fill_parent"
                                 android:layout_marginLeft="10dp">
                     <ImageView
                         android:id="@+id/imageView1"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="fill_parent"
                         android:layout_above="@+id/imageView1"
                         android:layout_alignParentLeft="true"
                         android:src="@drawable/glass_bg"/>
@@ -39,7 +39,7 @@
                     <com.group15.thermal.app.VerticalSeekBar
                         android:id="@+id/seekBar1"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="fill_parent"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:max="@integer/seekBar_max"
@@ -120,15 +120,16 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:text="00.0℃"
-                                android:textStyle="bold"
-                                android:typeface="sans"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
-                                android:textSize="50sp"/>
+                                android:textSize="50sp"
+                                android:textStyle="bold"
+                                android:typeface="sans"/>
                             <LinearLayout android:layout_width="fill_parent"
                                           android:layout_height="wrap_content"
-                                          android:orientation="vertical"
                                           android:layout_margin="10dp"
+                                          android:gravity="center_horizontal"
+                                          android:orientation="vertical"
                                 >
                                 <Button
                                     android:id="@+id/btSetPermanently"
@@ -144,50 +145,56 @@
                                               android:layout_height="41dp"
                                               android:layout_marginTop="5dp"
                                               android:layout_weight="1"
+                                              android:background="@drawable/togglevaca_bg"
                                               android:checked="false"
+                                              android:paddingRight="5dp"
+                                              android:singleLine="true"
                                               android:text=" "
                                               android:textOff=" "
                                               android:textOn=" "
-                                              android:background="@drawable/togglevaca_bg"
-                                              android:singleLine="true"
-                                              android:paddingRight="5dp"
                                               android:textSize="20sp"/>
-                            </LinearLayout>
-                            <TextView
-                                android:id="@+id/tvDay"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:gravity="right"
-                                android:text="Day Temperature"
-                                android:textColor="@android:color/white"
-                                android:textSize="20sp"/>
-                            <TextView
-                                android:id="@+id/tvdaytemp"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="right"
-                                android:text="00.0℃"
-                                android:textColor="@android:color/white"
-                                android:textSize="25sp"/>
-                            <TextView
-                                android:id="@+id/tvNight"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:gravity="right"
-                                android:text="Night Temperature"
-                                android:textColor="@android:color/white"
-                                android:textSize="20sp"/>
-                            <TextView
-                                android:id="@+id/tvnighttemp"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="right"
-                                android:text="00.0℃"
-                                android:textColor="@android:color/white"
-                                android:textSize="25sp"/>
+                                <LinearLayout android:layout_width="wrap_content"
+                                              android:layout_height="wrap_content"
+                                              android:layout_gravity="center_horizontal"
+                                              android:layout_marginLeft="10dp"
+                                              android:orientation="vertical">
+                                    <TextView
+                                        android:id="@+id/tvDay"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:gravity="right"
+                                        android:text="Day Temperature"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="20sp"/>
+                                    <TextView
+                                        android:id="@+id/tvdaytemp"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:text="00.0℃"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="25sp"/>
+                                    <TextView
+                                        android:id="@+id/tvNight"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:gravity="right"
+                                        android:text="Night Temperature"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="20sp"/>
+                                    <TextView
+                                        android:id="@+id/tvnighttemp"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:text="00.0℃"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="25sp"/>
 
+                                </LinearLayout>
+                            </LinearLayout>
 
                         </LinearLayout>
                     </LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="Toggletoggle" parent="android:Widget.Holo.Light.Button.Toggle">
+      <item name="android:background">@drawable/togglevaca</item>
+      <item name="android:disabledAlpha">?android:disabledAlpha</item>
+  </style>
+
+</resources>
