@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.group15.thermal.webservice.Heating;
 import com.group15.thermal.webservice.InvalidInputValueException;
 
@@ -31,6 +34,9 @@ public class MainActivity extends ActionBarActivity {
 	public static double temperature = 0.0;
 	public static String mode = "day";
 	public static int interval = 1000;
+	public static int stopupdate = 2;
+	ShowcaseView sv;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.status_activity);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container1, new PlaceholderFragment())
+					.add(R.id.container1, new PlaceholderFragment(), "fragment_day")
 					.commit();
 		}
 		try {
@@ -47,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public void GetThisWeekProgram() throws InterruptedException {
@@ -84,6 +91,8 @@ public class MainActivity extends ActionBarActivity {
 		MenuItem b = menu.findItem(R.id.weekbtn);
 		b.setTitle(changebtn);
 		return true;
+
+
 	}
 
 	Boolean change = false;
@@ -113,6 +122,88 @@ public class MainActivity extends ActionBarActivity {
 					invalidateOptionsMenu();
 				}
 				break;
+			case R.id.action_help:
+
+				final int[] counter = {0};
+				final Fragment a = getSupportFragmentManager().findFragmentByTag("fragment_day");
+
+				if(!a.isVisible()){
+					new ShowcaseView.Builder(a.getActivity())
+							.setTarget(new ViewTarget(getSupportFragmentManager().findFragmentByTag("list_weekprogram")
+												.getView().findViewById(R.id.tuebtn)))
+							.setContentTitle("Week Program")
+							.setContentText("Choose a day to change its switches")
+							.setStyle(R.style.CustomShowcaseTheme)
+							.build();
+				}else {
+					sv = new ShowcaseView.Builder(a.getActivity())
+							.setContentTitle("Welcome")
+							.setStyle(R.style.CustomShowcaseTheme)
+							.setContentText(" Here you will find the \n setting Day and Night temperatures")
+							.setOnClickListener(new ShowcaseView.OnClickListener() {
+								@Override
+								public void onClick(View view) {
+
+									switch (counter[0]) {
+										case 0:
+											a.getActivity().findViewById(R.id.buttonPlus).setAlpha(1.0f);
+											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.buttonPlus)), true);
+											sv.setContentTitle("Changing Temperature");
+											sv.setContentText("\nBy sliding the thermometer and/or pressing " +
+													"the two buttons next to it, you can change the current " +
+													"day temperature. If you change the temperature, it will " +
+													"be set until the next switch specified in the week program. ");
+											break;
+										case 1:
+											a.getView().findViewById(R.id.btSetPermanently).setEnabled(true);
+											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.btSetPermanently)), true);
+											sv.setContentTitle("Permanently set Temperature");
+											sv.setContentText("\nIf you don't want the temperature that you " +
+													"set to change at the time of a switch in the week program," +
+													" you can set your temperature permanently by pressing the button " +
+													"Set Permanently.");
+											break;
+										case 2:
+											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.ivSwitchIcon)), true);
+											sv.setContentTitle("Change mode");
+											sv.setContentText("\nClicking the sun/moon icon to change mode, day or night");
+											break;
+										case 3:
+											((ToggleButton)a.getView().findViewById(R.id.btnVacation)).setChecked(true);
+											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.btnVacation)), true);
+											sv.setContentTitle("Vacation mode");
+											sv.setContentText("Lastly you can enable the vacation mode of your thermostat." +
+													" In the vacation mode the thermostat will stick to the current temperature " +
+													"at all times.");
+											sv.setButtonText("Done");
+											break;
+										case 4:
+											sv.hide();
+									}
+
+									counter[0]++;
+								}
+							})
+							.setShowcaseEventListener(new OnShowcaseEventListener() {
+								@Override
+								public void onShowcaseViewHide(ShowcaseView showcaseView) {
+									stopupdate = 2;
+								}
+
+								@Override
+								public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+								}
+
+								@Override
+								public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+									stopupdate = 3;
+								}
+							})
+							.build();
+					sv.setButtonText("Next");
+				}
+				break;
 		}
 		return true;
 	}
@@ -134,7 +225,7 @@ public class MainActivity extends ActionBarActivity {
 		String curTemp = "10.1", dayTemp, nightTemp, weekState;
 		SeekBar seekBar;
 		View thisview = null;
-		int stopupdate = 2;
+
 
 		Handler timeHandler;
 		private TimerTask mTimerTask;
@@ -173,6 +264,13 @@ public class MainActivity extends ActionBarActivity {
 
 		}
 
+
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+
+			super.onActivityCreated(savedInstanceState);
+
+		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -425,42 +523,46 @@ public class MainActivity extends ActionBarActivity {
 					}
 
 					//Check mode and set button
-					if (mode.equals("day")) {
-						//check SET button
-						if (!Double.toString(temperature).equals(dayTemp)) {
-							setPermanent.setEnabled(true);
-						} else {
-							setPermanent.setEnabled(false);
-						}
-						if (!sunmoon.getTag().equals("sun")) {
-							sunmoon.setImageResource(R.drawable.sun_switch_ico);
-							thisview.setBackgroundResource(R.drawable.day_bg);
-							sunmoon.setTag("sun");
-						}
-						if (curTemp.equals(nightTemp)) {
-							mode = "night";
-						}
+					if (dayTemp.equals(nightTemp)) {
 
-					} else if (mode.equals("night")) {
-						if (!Double.toString(temperature).equals(nightTemp)) {
-							setPermanent.setEnabled(true);
-						} else {
-							setPermanent.setEnabled(false);
-						}
-						if (!sunmoon.getTag().equals("moon")) {
-							sunmoon.setImageResource(R.drawable.moon_switch_ico);
-							thisview.setBackgroundResource(R.drawable.night_bg);
-							sunmoon.setTag("moon");
-						}
-						if (curTemp.equals(dayTemp)) {
-							mode = "day";
+					} else {
+						if (mode.equals("day")) {
+							//check SET button
+							if (!Double.toString(temperature).equals(dayTemp)) {
+								setPermanent.setEnabled(true);
+							} else {
+								setPermanent.setEnabled(false);
+							}
+							if (!sunmoon.getTag().equals("sun")) {
+								sunmoon.setImageResource(R.drawable.sun_switch_ico);
+								thisview.setBackgroundResource(R.drawable.day_bg);
+								sunmoon.setTag("sun");
+							}
+							if (curTemp.equals(nightTemp)) {
+								mode = "night";
+							}
+
+						} else if (mode.equals("night")) {
+							if (!Double.toString(temperature).equals(nightTemp)) {
+								setPermanent.setEnabled(true);
+							} else {
+								setPermanent.setEnabled(false);
+							}
+							if (!sunmoon.getTag().equals("moon")) {
+								sunmoon.setImageResource(R.drawable.moon_switch_ico);
+								thisview.setBackgroundResource(R.drawable.night_bg);
+								sunmoon.setTag("moon");
+							}
+							if (curTemp.equals(dayTemp)) {
+								mode = "day";
+							}
 						}
 					}
 				}
 //				} else if (stopupdate == 1) {
 //					stopupdate=2;
 //				}
-				else{
+				else {
 					stopupdate++;
 				}
 				super.onPostExecute(s);

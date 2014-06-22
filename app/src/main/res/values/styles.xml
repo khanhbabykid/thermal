@@ -4,5 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <style name="CustomShowcaseTheme" parent="ShowcaseView">
+        <item name="sv_backgroundColor">#92000000</item>
+        <item name="sv_buttonBackgroundColor">#ff7354cf</item>
 
+    </style>
 </resources>

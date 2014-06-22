@@ -17,7 +17,6 @@
         android:id="@+id/section_label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:text="Monday Settings"
         android:textSize="30sp"
         android:gravity="center"
@@ -26,7 +25,6 @@
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:gravity="center">
@@ -40,6 +38,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
                 android:text="Day to Night"
+                android:id="@+id/tvd2n"
                 android:gravity="center_horizontal"
                 android:textSize="20sp"
                 android:layout_marginRight="10dp"

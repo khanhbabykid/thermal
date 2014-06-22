@@ -11,9 +11,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.group15.thermal.webservice.CorruptWeekProgramException;
 import com.group15.thermal.webservice.Heating;
 import com.group15.thermal.webservice.WeekProgram;
@@ -51,6 +55,7 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 	ViewPager mViewPager;
 	public static WeekProgram weekProgram = null;
 	public static int currentFragment = 0;
+	ShowcaseView sv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +196,47 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 			Intent intent = getIntent();
 			finish();
 			startActivity(intent);
+			return true;
+		}
+		if(id==R.id.action_help){
+			Fragment currentFragment=null;
+			for(Fragment a : getSupportFragmentManager().getFragments()){
+				if(a.isVisible()){
+					currentFragment =a;
+					break;
+				}
+			}
+			final int[] counter = {0};
+			final Fragment finalCurrentFragment = currentFragment;
+			sv = new ShowcaseView.Builder(currentFragment.getActivity())
+					.setTarget(new ViewTarget(currentFragment.getView().findViewById(R.id.tvd2n)))
+					.setContentTitle("Switches")
+					.setStyle(R.style.CustomShowcaseTheme)
+					.setContentText("The thermostat can either be in the day-mode or in the night-mode, " +
+							"for which there exist a corresponding day-temperature and night-temperature. ")
+					.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							switch (counter[0]){
+								case 0:
+									sv.setShowcase(new ViewTarget(finalCurrentFragment.getView().findViewById(R.id.switchbtn5)),true);
+									sv.setContentText(" Each day can have different switching times and " +
+											"you are allowed to switch 5 times a day");
+									break;
+								case 1:
+									ActionViewTarget home = new ActionViewTarget(finalCurrentFragment.getActivity(), ActionViewTarget.Type.HOME);
+									sv.setShowcase(home,true);
+									sv.setContentText("Click on Home to go back!");
+									sv.setButtonText("Done");
+									break;
+								case 2:
+									sv.hide();
+							}
+							counter[0]++;
+						}
+					})
+					.build();
+			sv.setButtonText("Next");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
