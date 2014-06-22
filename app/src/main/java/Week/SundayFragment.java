@@ -102,9 +102,11 @@ public class SundayFragment extends Fragment implements View.OnClickListener,OnR
 			final int finalUsedint = UsedButton;
 			TimePickerDialog.OnTimeSetListener gettime;
 			gettime = new TimePickerDialog.OnTimeSetListener() {
-				boolean fired=false;
+				boolean fired = false;
+
 				@Override
 				public void onTimeSet(TimePicker timePicker, int i, int i2) {
+
 					System.out.println("time set");
 					if (fired == false) {
 						if (finalUsedint == 0) {
@@ -117,12 +119,14 @@ public class SundayFragment extends Fragment implements View.OnClickListener,OnR
 							setTime(i, i2);
 							sortTimes(2);
 						}
-					}else {
-						fired=true;
 					}
+					fired = true;
+
 
 				}
-			};
+			}
+
+			;
 			TimePickerDialog picker = new TimePickerDialog(thisview.getContext(), gettime,
 					new Integer(usedbutton.getText().toString().split(":")[0]),
 					new Integer(usedbutton.getText().toString().split(":")[1]), true);

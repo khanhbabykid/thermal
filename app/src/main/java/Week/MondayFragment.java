@@ -37,7 +37,6 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 		TextView titleview = (TextView) rootView.findViewById(R.id.section_label);
 		titleview.setText(title + " Settings");
-		setRetainInstance(true);
 		return rootView;
 	}
 
@@ -56,6 +55,7 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 
 
 	private void UpdateDisplay() {
+
 		System.out.println("Updated");
 		for (Switch swbtn : WeekDetails.weekProgram.getDaySwitches(title)) {
 			if (swbtn.getType().equalsIgnoreCase("day")) {
@@ -79,6 +79,7 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 
 	@Override
 	public void onRefresh() {
+
 		UpdateDisplay();
 
 
@@ -105,12 +106,13 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 			final int finalUsedint = UsedButton;
 			TimePickerDialog.OnTimeSetListener gettime;
 			gettime = new TimePickerDialog.OnTimeSetListener() {
-				int callCount = 0;
+				boolean fired = false;
 
 				@Override
 				public void onTimeSet(TimePicker timePicker, int i, int i2) {
 
-					if (callCount == 1) {
+					System.out.println("time set");
+					if (fired == false) {
 						if (finalUsedint == 0) {
 							setTime(i, i2);
 							sortTimes(1);
@@ -122,9 +124,13 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 							sortTimes(2);
 						}
 					}
-					callCount++;
+					fired = true;
+
+
 				}
-			};
+			}
+
+			;
 			TimePickerDialog picker = new TimePickerDialog(thisview.getContext(), gettime,
 					new Integer(usedbutton.getText().toString().split(":")[0]),
 					new Integer(usedbutton.getText().toString().split(":")[1]), true);
@@ -205,7 +211,6 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 	}
 
 
-
 	private boolean putWeekProgram() {
 
 		ArrayList<Switch> newSwitches = new ArrayList<Switch>();
@@ -219,6 +224,7 @@ public class MondayFragment extends Fragment implements View.OnClickListener, On
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+
 				try {
 					Heating.setWeekProgram(WeekDetails.weekProgram);
 				} catch (Exception e) {

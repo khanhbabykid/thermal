@@ -174,7 +174,7 @@
         >
         <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:text="Save"
-            style="@style/DAY"
+            style="@style/ButtonDAY"
             android:textAlignment="center"
             android:textSize="25sp"
             android:textColor="#FFFFFFFF"

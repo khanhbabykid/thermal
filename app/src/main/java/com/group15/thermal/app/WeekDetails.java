@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
@@ -220,19 +221,47 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 							switch (counter[0]){
 								case 0:
 									sv.setShowcase(new ViewTarget(finalCurrentFragment.getView().findViewById(R.id.switchbtn5)),true);
-									sv.setContentText(" Each day can have different switching times and " +
+									sv.setContentText("Each day can have different switching times and " +
 											"you are allowed to switch 5 times a day");
 									break;
-								case 1:
+								case 3:
 									ActionViewTarget home = new ActionViewTarget(finalCurrentFragment.getActivity(), ActionViewTarget.Type.HOME);
 									sv.setShowcase(home,true);
 									sv.setContentText("Click on Home to go back!");
 									sv.setButtonText("Done");
 									break;
+								case 1:
+
+									sv.setShowcase(new ViewTarget(finalCurrentFragment.getView().findViewById(R.id.savebtn)),true);
+									finalCurrentFragment.getView().findViewById(R.id.savebtn).setVisibility(View.VISIBLE);
+									sv.setContentText("Click save to save all changes");
+									break;
 								case 2:
+									ActionViewTarget a = new ActionViewTarget(finalCurrentFragment.getActivity(), ActionViewTarget.Type.OVERFLOW);
+									sv.setShowcase(a,true);
+									sv.setContentText("You can click on Refresh to Refresh current day setting.\nOr Refresh All to refresh" +
+											" the whole week settings");
+									break;
+								case 4:
 									sv.hide();
 							}
 							counter[0]++;
+						}
+					})
+					.setShowcaseEventListener(new OnShowcaseEventListener() {
+						@Override
+						public void onShowcaseViewHide(ShowcaseView showcaseView) {
+
+						}
+
+						@Override
+						public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+							finalCurrentFragment.getView().findViewById(R.id.savebtn).setVisibility(View.INVISIBLE);
+						}
+
+						@Override
+						public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
 						}
 					})
 					.build();
