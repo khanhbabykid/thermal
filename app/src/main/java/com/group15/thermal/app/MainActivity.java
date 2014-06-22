@@ -36,7 +36,8 @@ public class MainActivity extends ActionBarActivity {
 	public static int interval = 1000;
 	public static int stopupdate = 2;
 	ShowcaseView sv;
-
+	Boolean change = false;
+	String changebtn = "Week Program";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,6 @@ public class MainActivity extends ActionBarActivity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				/* TODO Auto-generated method stub */
 				Toast.makeText(MainActivity.this, toast, length == 1 ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
 
 			}
@@ -89,14 +89,13 @@ public class MainActivity extends ActionBarActivity {
 
 		getMenuInflater().inflate(R.menu.menu_weeklist, menu);
 		MenuItem b = menu.findItem(R.id.weekbtn);
-		b.setTitle(changebtn);
+		if (b != null) {
+			b.setTitle(changebtn);
+		}
 		return true;
 
 
 	}
-
-	Boolean change = false;
-	String changebtn = "Week Program";
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -104,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
 		int id = item.getItemId();
 		switch (id) {
 			case R.id.weekbtn:
-				if (change == false) {
+				if (!change) {
 					WeekActivity weekActivity = new WeekActivity();
 					FragmentTransaction a = getSupportFragmentManager().beginTransaction();
 					a.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
@@ -127,15 +126,15 @@ public class MainActivity extends ActionBarActivity {
 				final int[] counter = {0};
 				final Fragment a = getSupportFragmentManager().findFragmentByTag("fragment_day");
 
-				if(!a.isVisible()){
+				if (!a.isVisible()) {
 					new ShowcaseView.Builder(a.getActivity())
 							.setTarget(new ViewTarget(getSupportFragmentManager().findFragmentByTag("list_weekprogram")
-												.getView().findViewById(R.id.tuebtn)))
+									.getView().findViewById(R.id.tuebtn)))
 							.setContentTitle("Week Program")
 							.setContentText("Choose a day to change its switches")
 							.setStyle(R.style.CustomShowcaseTheme)
 							.build();
-				}else {
+				} else {
 					sv = new ShowcaseView.Builder(a.getActivity())
 							.setContentTitle("Welcome")
 							.setStyle(R.style.CustomShowcaseTheme)
@@ -169,7 +168,7 @@ public class MainActivity extends ActionBarActivity {
 											sv.setContentText("\nClicking the sun/moon icon to change mode, day or night");
 											break;
 										case 3:
-											((ToggleButton)a.getView().findViewById(R.id.btnVacation)).setChecked(true);
+											((ToggleButton) a.getView().findViewById(R.id.btnVacation)).setChecked(true);
 											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.btnVacation)), true);
 											sv.setContentTitle("Vacation mode");
 											sv.setContentText("Lastly you can enable the vacation mode of your thermostat." +
@@ -187,11 +186,13 @@ public class MainActivity extends ActionBarActivity {
 							.setShowcaseEventListener(new OnShowcaseEventListener() {
 								@Override
 								public void onShowcaseViewHide(ShowcaseView showcaseView) {
+
 									stopupdate = 2;
 								}
 
 								@Override
 								public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
 								}
 
 								@Override
@@ -214,10 +215,6 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
 
-		public PlaceholderFragment() {
-
-		}
-
 		Button plus, minus, setPermanent;
 		ToggleButton vacationMode;
 		TextView currentTemp, daytext, daytemp, nighttext, nighttemp;
@@ -225,12 +222,13 @@ public class MainActivity extends ActionBarActivity {
 		String curTemp = "10.1", dayTemp, nightTemp, weekState;
 		SeekBar seekBar;
 		View thisview = null;
-
-
 		Handler timeHandler;
 		private TimerTask mTimerTask;
 		private Timer timer = null;
 
+		public PlaceholderFragment() {
+
+		}
 
 		@Override
 		public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -279,36 +277,36 @@ public class MainActivity extends ActionBarActivity {
 			View rootView = inflater.inflate(R.layout.fragment_day, container, false);
 			thisview = rootView;
 
-			seekBar = (SeekBar) rootView.findViewById(R.id.seekBar1);
-
-			vacationMode = (ToggleButton) rootView.findViewById(R.id.btnVacation);
-			vacationMode.setOnClickListener(this);
-
-			plus = (Button) rootView.findViewById(R.id.buttonPlus);
-			plus.setOnClickListener(this);
-
-			minus = (Button) rootView.findViewById(R.id.buttonMinus);
-			minus.setOnClickListener(this);
-
-			setPermanent = (Button) rootView.findViewById(R.id.btSetPermanently);
-			setPermanent.setOnClickListener(this);
-
-			currentTemp = (TextView) rootView.findViewById(R.id.tvCurrentTemperature);
-			daytext = (TextView) rootView.findViewById(R.id.tvDay);
-			daytemp = (TextView) rootView.findViewById(R.id.tvdaytemp);
-			nighttext = (TextView) rootView.findViewById(R.id.tvNight);
-			nighttemp = (TextView) rootView.findViewById(R.id.tvnighttemp);
-
-			sunmoon = (ImageView) rootView.findViewById(R.id.ivSwitchIcon);
-			sunmoon.setOnClickListener(this);
+			if (rootView != null) {
+				seekBar = (SeekBar) rootView.findViewById(R.id.seekBar1);
 
 
+				vacationMode = (ToggleButton) rootView.findViewById(R.id.btnVacation);
+				vacationMode.setOnClickListener(this);
+
+				plus = (Button) rootView.findViewById(R.id.buttonPlus);
+				plus.setOnClickListener(this);
+
+				minus = (Button) rootView.findViewById(R.id.buttonMinus);
+				minus.setOnClickListener(this);
+
+				setPermanent = (Button) rootView.findViewById(R.id.btSetPermanently);
+				setPermanent.setOnClickListener(this);
+
+				currentTemp = (TextView) rootView.findViewById(R.id.tvCurrentTemperature);
+				daytext = (TextView) rootView.findViewById(R.id.tvDay);
+				daytemp = (TextView) rootView.findViewById(R.id.tvdaytemp);
+				nighttext = (TextView) rootView.findViewById(R.id.tvNight);
+				nighttemp = (TextView) rootView.findViewById(R.id.tvnighttemp);
+
+				sunmoon = (ImageView) rootView.findViewById(R.id.ivSwitchIcon);
+				sunmoon.setOnClickListener(this);
+
+			}
 			seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 				@Override
 				public void onStartTrackingTouch(SeekBar seekBar) {
-					// TODO Auto-generated method stub
-
 				}
 
 				@Override
@@ -319,7 +317,6 @@ public class MainActivity extends ActionBarActivity {
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress,
 				                              boolean fromUser) {
-					// TODO Auto-generated method stub
 					if (progress < 50) {
 						seekBar.setProgress(50);
 					} else {

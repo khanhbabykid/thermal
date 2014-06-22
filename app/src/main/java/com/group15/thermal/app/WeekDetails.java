@@ -40,6 +40,8 @@ import Week.WednesdayFragment;
 
 public class WeekDetails extends ActionBarActivity implements ActionBar.TabListener, OnRefreshListener {
 
+	public static WeekProgram weekProgram = null;
+	public static int currentFragment = 0;
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -49,13 +51,10 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
-
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	public static WeekProgram weekProgram = null;
-	public static int currentFragment = 0;
 	ShowcaseView sv;
 
 	@Override
@@ -88,7 +87,6 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 
 				actionBar.setSelectedNavigationItem(position);
 				currentFragment = position;
-
 			}
 		});
 
@@ -162,7 +160,6 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				/* TODO Auto-generated method stub */
 				Toast.makeText(WeekDetails.this, toast, length == 1 ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
 
 			}
@@ -199,18 +196,18 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 			startActivity(intent);
 			return true;
 		}
-		if(id==R.id.action_help){
-			Fragment currentFragment=null;
-			for(Fragment a : getSupportFragmentManager().getFragments()){
-				if(a.isVisible()){
-					currentFragment =a;
+		if (id == R.id.action_help) {
+			Fragment currentFragment = null;
+			for (Fragment a : getSupportFragmentManager().getFragments()) {
+				if (a.isVisible()) {
+					currentFragment = a;
 					break;
 				}
 			}
 			final int[] counter = {0};
 			final Fragment finalCurrentFragment = currentFragment;
-			sv = new ShowcaseView.Builder(currentFragment.getActivity())
-					.setTarget(new ViewTarget(currentFragment.getView().findViewById(R.id.tvd2n)))
+			sv = new ShowcaseView.Builder(currentFragment != null ? currentFragment.getActivity() : null)
+					.setTarget(new ViewTarget(currentFragment != null ? currentFragment.getView().findViewById(R.id.tvd2n) : null))
 					.setContentTitle("Switches")
 					.setStyle(R.style.CustomShowcaseTheme)
 					.setContentText("The thermostat can either be in the day-mode or in the night-mode, " +
@@ -218,27 +215,29 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 					.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							switch (counter[0]){
+
+							switch (counter[0]) {
 								case 0:
-									sv.setShowcase(new ViewTarget(finalCurrentFragment.getView().findViewById(R.id.switchbtn5)),true);
+									sv.setShowcase(new ViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getView().findViewById(R.id.switchbtn5) : null), true);
 									sv.setContentText("Each day can have different switching times and " +
 											"you are allowed to switch 5 times a day");
 									break;
 								case 3:
-									ActionViewTarget home = new ActionViewTarget(finalCurrentFragment.getActivity(), ActionViewTarget.Type.HOME);
-									sv.setShowcase(home,true);
+									ActionViewTarget home = new ActionViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getActivity() : null, ActionViewTarget.Type.HOME);
+									sv.setShowcase(home, true);
 									sv.setContentText("Click on Home to go back!");
 									sv.setButtonText("Done");
 									break;
 								case 1:
-
-									sv.setShowcase(new ViewTarget(finalCurrentFragment.getView().findViewById(R.id.savebtn)),true);
-									finalCurrentFragment.getView().findViewById(R.id.savebtn).setVisibility(View.VISIBLE);
+									sv.setShowcase(new ViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getView().findViewById(R.id.savebtn) : null), true);
+									if (finalCurrentFragment != null) {
+										finalCurrentFragment.getView().findViewById(R.id.savebtn).setVisibility(View.VISIBLE);
+									}
 									sv.setContentText("Click save to save all changes");
 									break;
 								case 2:
-									ActionViewTarget a = new ActionViewTarget(finalCurrentFragment.getActivity(), ActionViewTarget.Type.OVERFLOW);
-									sv.setShowcase(a,true);
+									ActionViewTarget a = new ActionViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getActivity() : null, ActionViewTarget.Type.OVERFLOW);
+									sv.setShowcase(a, true);
 									sv.setContentText("You can click on Refresh to Refresh current day setting.\nOr Refresh All to refresh" +
 											" the whole week settings");
 									break;
@@ -256,7 +255,10 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 
 						@Override
 						public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-							finalCurrentFragment.getView().findViewById(R.id.savebtn).setVisibility(View.INVISIBLE);
+
+							if (finalCurrentFragment != null) {
+								finalCurrentFragment.getView().findViewById(R.id.savebtn).setVisibility(View.INVISIBLE);
+							}
 						}
 
 						@Override
