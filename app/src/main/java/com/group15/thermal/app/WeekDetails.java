@@ -218,13 +218,15 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 
 							switch (counter[0]) {
 								case 0:
-									sv.setShowcase(new ViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getView().findViewById(R.id.switchbtn5) : null), true);
+									sv.setContentTitle("5 + 5 Switches");
+									sv.setShowcase(new ViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getView().findViewById(R.id.switchbtn4) : null), true);
 									sv.setContentText("Each day can have different switching times and " +
 											"you are allowed to switch 5 times a day");
 									break;
 								case 3:
 									ActionViewTarget home = new ActionViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getActivity() : null, ActionViewTarget.Type.HOME);
 									sv.setShowcase(home, true);
+									sv.setContentTitle("Back navigation");
 									sv.setContentText("Click on Home to go back!");
 									sv.setButtonText("Done");
 									break;
@@ -233,12 +235,14 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 									if (finalCurrentFragment != null) {
 										finalCurrentFragment.getView().findViewById(R.id.savebtn).setVisibility(View.VISIBLE);
 									}
+									sv.setContentTitle("Save");
 									sv.setContentText("Click save to save all changes");
 									break;
 								case 2:
 									ActionViewTarget a = new ActionViewTarget(finalCurrentFragment != null ? finalCurrentFragment.getActivity() : null, ActionViewTarget.Type.OVERFLOW);
 									sv.setShowcase(a, true);
-									sv.setContentText("You can click on Refresh to Refresh current day setting.\nOr Refresh All to refresh" +
+									sv.setContentTitle("Options");
+									sv.setContentText("You can click on Refresh to refresh current day setting.\nOr Refresh All to refresh" +
 											" the whole week settings");
 									break;
 								case 4:
@@ -269,6 +273,9 @@ public class WeekDetails extends ActionBarActivity implements ActionBar.TabListe
 					.build();
 			sv.setButtonText("Next");
 			return true;
+		}
+		if (id == android.R.id.home) {
+			onBackPressed();
 		}
 		return super.onOptionsItemSelected(item);
 	}

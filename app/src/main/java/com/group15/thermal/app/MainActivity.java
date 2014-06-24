@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
 	public static double temperature = 0.0;
 	public static String mode = "day";
-	public static int interval = 1000;
+	public static int interval = 500;
 	public static int stopupdate = 2;
 	ShowcaseView sv;
 	Boolean change = false;
@@ -58,15 +58,15 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void GetThisWeekProgram() throws InterruptedException {
-
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 
 				if (Heating.startservice()) {
 					showToast("Connected!", 1);
-				} else
+				} else {
 					showToast("Unable to connect to web service!", 1);
+				}
 			}
 		});
 		t.start();
@@ -78,6 +78,7 @@ public class MainActivity extends ActionBarActivity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+
 				Toast.makeText(MainActivity.this, toast, length == 1 ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
 
 			}
@@ -138,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
 					sv = new ShowcaseView.Builder(a.getActivity())
 							.setContentTitle("Welcome")
 							.setStyle(R.style.CustomShowcaseTheme)
-							.setContentText(" Here you will find the \n setting Day and Night temperatures")
+							.setContentText("Here you will find the \nsettings for Day and Night temperatures")
 							.setOnClickListener(new ShowcaseView.OnClickListener() {
 								@Override
 								public void onClick(View view) {
@@ -148,32 +149,30 @@ public class MainActivity extends ActionBarActivity {
 											a.getActivity().findViewById(R.id.buttonPlus).setAlpha(1.0f);
 											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.buttonPlus)), true);
 											sv.setContentTitle("Changing Temperature");
-											sv.setContentText("\nBy sliding the thermometer and/or pressing " +
+											sv.setContentText("By sliding the thermometer or pressing " +
 													"the two buttons next to it, you can change the current " +
 													"day temperature. If you change the temperature, it will " +
-													"be set until the next switch specified in the week program. ");
+													"be set until the next switch specified in the week program ");
 											break;
 										case 1:
 											a.getView().findViewById(R.id.btSetPermanently).setEnabled(true);
 											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.btSetPermanently)), true);
-											sv.setContentTitle("Permanently set Temperature");
-											sv.setContentText("\nIf you don't want the temperature that you " +
-													"set to change at the time of a switch in the week program," +
-													" you can set your temperature permanently by pressing the button " +
-													"Set Permanently.");
+											sv.setContentTitle("Permanent Temperature");
+											sv.setContentText("If you want to change the DAY or NIGHT temperature, " +
+													" you can set by pressing the button Set Permanently");
 											break;
 										case 2:
 											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.ivSwitchIcon)), true);
 											sv.setContentTitle("Change mode");
-											sv.setContentText("\nClicking the sun/moon icon to change mode, day or night");
+											sv.setContentText("Clicking the sun/moon icon to change mode to DAY or NIGHT");
 											break;
 										case 3:
 											((ToggleButton) a.getView().findViewById(R.id.btnVacation)).setChecked(true);
 											sv.setShowcase(new ViewTarget(a.getView().findViewById(R.id.btnVacation)), true);
 											sv.setContentTitle("Vacation mode");
-											sv.setContentText("Lastly you can enable the vacation mode of your thermostat." +
+											sv.setContentText("Lastly you can enable the Vacation Mode of your thermostat." +
 													" In the vacation mode the thermostat will stick to the current temperature " +
-													"at all times.");
+													"at all times");
 											sv.setButtonText("Done");
 											break;
 										case 4:
@@ -307,6 +306,7 @@ public class MainActivity extends ActionBarActivity {
 
 				@Override
 				public void onStartTrackingTouch(SeekBar seekBar) {
+
 				}
 
 				@Override
@@ -317,6 +317,7 @@ public class MainActivity extends ActionBarActivity {
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress,
 				                              boolean fromUser) {
+
 					if (progress < 50) {
 						seekBar.setProgress(50);
 					} else {
@@ -371,39 +372,34 @@ public class MainActivity extends ActionBarActivity {
 			super.onResume();
 		}
 
+		public void setVacationMode(final String a) {
+
+			vacationMode.setChecked(!vacationMode.isChecked());
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+
+					try {
+						Heating.put(Heating.WEEK_STATE, a);
+						System.out.println("Vacation Mode: " + (a.equals("on") ? "OFF" : "ON"));
+					} catch (InvalidInputValueException e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}
+
 		@Override
 		public void onClick(View view) {
 
 			switch (view.getId()) {
 				case R.id.btnVacation:
 					if (vacationMode.isChecked()) {
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-
-								try {
-									Heating.put(Heating.WEEK_STATE, "off");
-									System.out.println("Vacation Mode: ON");
-								} catch (InvalidInputValueException e) {
-									e.printStackTrace();
-								}
-							}
-						}).start();
+						setVacationMode("off");
 					} else {
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-
-								try {
-									Heating.put(Heating.WEEK_STATE, "on");
-									System.out.println("Vacation Mode: OFF");
-								} catch (InvalidInputValueException e) {
-									e.printStackTrace();
-								}
-							}
-						}).start();
+						setVacationMode("on");
 					}
-					vacationMode.setChecked(!vacationMode.isChecked());
+
 					break;
 				case R.id.buttonPlus:
 					changeTemperature(0);
@@ -417,17 +413,23 @@ public class MainActivity extends ActionBarActivity {
 					changemode(0);
 					break;
 				case R.id.btSetPermanently:
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
+					if (dayTemp.equals(nightTemp)) {
+						Toast.makeText(getActivity(), "Day and Night temperature can not be the same!", Toast.LENGTH_LONG).show();
+					} else {
+						setPermanent.setEnabled(false);
+						stopupdate = 1;
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
 
-							try {
-								Heating.put(mode.equals("day") ? Heating.DAY_TEMP : Heating.NIGHT_TEMP, Double.toString(temperature));
-							} catch (InvalidInputValueException e) {
-								e.printStackTrace();
+								try {
+									Heating.put(mode.equals("day") ? Heating.DAY_TEMP : Heating.NIGHT_TEMP, Double.toString(temperature));
+								} catch (InvalidInputValueException e) {
+									e.printStackTrace();
+								}
 							}
-						}
-					}).start();
+						}).start();
+					}
 					break;
 			}
 		}
@@ -521,7 +523,7 @@ public class MainActivity extends ActionBarActivity {
 
 					//Check mode and set button
 					if (dayTemp.equals(nightTemp)) {
-
+						setPermanent.setEnabled(true);
 					} else {
 						if (mode.equals("day")) {
 							//check SET button
@@ -555,11 +557,7 @@ public class MainActivity extends ActionBarActivity {
 							}
 						}
 					}
-				}
-//				} else if (stopupdate == 1) {
-//					stopupdate=2;
-//				}
-				else {
+				} else {
 					stopupdate++;
 				}
 				super.onPostExecute(s);
