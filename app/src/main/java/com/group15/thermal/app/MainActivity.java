@@ -413,7 +413,7 @@ public class MainActivity extends ActionBarActivity {
 					changemode(0);
 					break;
 				case R.id.btSetPermanently:
-					if (dayTemp.equals(nightTemp)) {
+					if (dayTemp.equals(nightTemp) && curTemp.equals(dayTemp)) {
 						Toast.makeText(getActivity(), "Day and Night temperature can not be the same!", Toast.LENGTH_LONG).show();
 					} else {
 						setPermanent.setEnabled(false);
