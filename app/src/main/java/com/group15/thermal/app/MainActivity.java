@@ -395,7 +395,6 @@ public class MainActivity extends ActionBarActivity {
                     } else {
                         setVacationMode("on");
                     }
-
                     break;
                 case R.id.buttonPlus:
                     changeTemperature(0);

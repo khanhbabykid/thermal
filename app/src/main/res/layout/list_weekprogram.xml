@@ -1,183 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:tag="list_weekprogram"
-              android:layout_height="match_parent" android:background="#CCCCCC">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CCCCCC"
+    android:orientation="vertical"
+    android:tag="list_weekprogram">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        
+
         >
+
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/header"
             android:layout_width="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:background="#FFFFFFFF"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-            >
+            android:layout_centerHorizontal="true"
+            android:background="#FFFFFFFF"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             //...insert stuff here
         </LinearLayout>
 
         <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:id="@+id/footer"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_marginTop="20dp"-->
-                        <!-->-->
-            <!--<Button android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:textColor="#030101"-->
-                <!--style="@android:style/Widget.Holo.Button.Borderless"-->
-                <!--android:text="Today"/>-->
-            <!--<View android:layout_width="3dp" android:layout_height="match_parent"-->
-                <!--android:background="@drawable/back_white_divider"/>-->
-            <!--<Button android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:textColor="#26130b"-->
-                    <!--style="@android:style/Widget.Holo.Button.Borderless"-->
-                <!--android:text="Help"/>-->
-            <!--//...insert stuff here-->
+        <!--android:orientation="horizontal"-->
+        <!--android:id="@+id/footer"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!-->-->
+        <!--<Button android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:textColor="#030101"-->
+        <!--style="@android:style/Widget.Holo.Button.Borderless"-->
+        <!--android:text="Today"/>-->
+        <!--<View android:layout_width="3dp" android:layout_height="match_parent"-->
+        <!--android:background="@drawable/back_white_divider"/>-->
+        <!--<Button android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:textColor="#26130b"-->
+        <!--style="@android:style/Widget.Holo.Button.Borderless"-->
+        <!--android:text="Help"/>-->
+        <!--//...insert stuff here-->
         <!--</LinearLayout>-->
 
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
+            android:layout_below="@+id/header"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:background="#fffffb"
+
+            android:orientation="vertical"
             android:paddingBottom="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:paddingTop="15dp"
+            android:visibility="visible">
 
-            android:orientation="vertical" android:visibility="visible"
-            android:layout_gravity="center_horizontal" android:layout_below="@+id/header"
-            android:layout_centerHorizontal="true" android:background="#fffffb">
-            <TableRow
-                ><TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="  Week Program  "
-                android:textSize="30sp"
-                android:gravity="center"
-                android:layout_marginBottom="20dip"/></TableRow>
+            <TableRow>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dip"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="  Week Program  "
+                    android:textSize="30sp" />
+            </TableRow>
+
             <TableRow
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                >
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
                 <Button
-                    android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"
+                    android:id="@+id/monbtn"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_gravity="center_horizontal"
                     android:width="240dp"
                     android:text="Monday"
-                    android:id="@+id/monbtn"
+                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
 
                     />
             </TableRow>
+
             <TableRow
                 android:layout_width="fill_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_horizontal">
+
                 <Button
-                    android:textAlignment="center"
+                    android:id="@+id/tuebtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="#FFFF"
-                    android:id="@+id/tuebtn" android:text="Tuesday"/>
+                    android:text="Tuesday"
+                    android:textAlignment="center"
+                    android:textColor="#FFFF" />
             </TableRow>
+
             <TableRow
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                >
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
                 <Button
-                    android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"
+                    android:id="@+id/wedbtn"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_gravity="center_horizontal"
                     android:width="240dp"
                     android:text="Wednesday"
-                    android:id="@+id/wedbtn"
+                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
 
                     />
             </TableRow>
+
             <TableRow
                 android:layout_width="fill_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_horizontal">
+
                 <Button
-                    android:textAlignment="center"
+                    android:id="@+id/thubtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="#FFFF"
-                    android:id="@+id/thubtn" android:text="Thursday"/>
+                    android:text="Thursday"
+                    android:textAlignment="center"
+                    android:textColor="#FFFF" />
             </TableRow>
+
             <TableRow
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                >
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
                 <Button
-                    android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"
+                    android:id="@+id/fribtn"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_gravity="center_horizontal"
                     android:width="240dp"
                     android:text="Friday"
-                    android:id="@+id/fribtn"
+                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
 
                     />
             </TableRow>
+
             <TableRow
                 android:layout_width="fill_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_horizontal">
+
                 <Button
-                    android:textAlignment="center"
+                    android:id="@+id/satbtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="#FFFF"
-                    android:id="@+id/satbtn" android:text="Saturday"/>
+                    android:text="Saturday"
+                    android:textAlignment="center"
+                    android:textColor="#FFFF" />
             </TableRow>
+
             <TableRow
                 android:layout_width="fill_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_horizontal">
+
                 <Button
-                    android:textAlignment="center"
+                    android:id="@+id/sunbtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="#FFFF"
-                    android:id="@+id/sunbtn" android:text="Sunday"/>
+                    android:text="Sunday"
+                    android:textAlignment="center"
+                    android:textColor="#FFFF" />
             </TableRow>
         </TableLayout>
 
     </RelativeLayout>
-    <Button style="@android:style/Widget.Holo.Button.Borderless" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:textColor="#030101" android:text="Today" android:id="@+id/button"
-            android:layout_gravity="right"/>
+
+    <Button
+        android:id="@+id/button"
+        style="@android:style/Widget.Holo.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_weight="1"
+        android:text="Today"
+        android:textColor="#030101" />
 </LinearLayout>
