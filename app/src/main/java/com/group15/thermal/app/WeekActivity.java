@@ -46,30 +46,7 @@ public class WeekActivity extends Fragment implements View.OnClickListener {
 
 		Intent a;
 		a = new Intent(getActivity(), WeekDetails.class);
-
-        switch (i) {
-            case 0:
-				a.putExtra("which_one", 0);
-				break;
-			case 1:
-				a.putExtra("which_one", 1);
-				break;
-			case 2:
-				a.putExtra("which_one", 2);
-				break;
-			case 3:
-				a.putExtra("which_one", 3);
-				break;
-			case 4:
-				a.putExtra("which_one", 4);
-				break;
-			case 5:
-				a.putExtra("which_one", 5);
-				break;
-			case 6:
-				a.putExtra("which_one", 6);
-				break;
-		}
-		startActivity(a);
+        a.putExtra("which_one", i);
+        startActivity(a);
 	}
 }
